@@ -1,0 +1,13 @@
+/* Home.css */
+
+.home-container {
+    background: rgb(220, 166, 17);
+    padding: 20px;
+    text-align: center;
+    height: 45vh; /* Wysokość na całą wysokość ekranu (viewport height) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  

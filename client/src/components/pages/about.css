@@ -1,0 +1,29 @@
+/* About.css */
+
+.about-container {
+    background: rgb(220, 166, 17);
+    padding: 20px;
+    text-align: center;
+    height: 45vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .content {
+    background-color: #353333;
+    padding: 60px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgb(240, 240, 240);
+  }
+  
+  h1 {
+    font-size: 2rem;
+    color: #b5afaf;
+  }
+  
+  p {
+    font-size: 1rem;
+    color: #e8e2e2;
+  }
+  
