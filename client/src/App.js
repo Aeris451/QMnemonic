@@ -5,6 +5,9 @@ import { Route, Routes } from 'react-router-dom';
 import About from "./components/pages/about";
 import Home from "./components/pages/home";
 import Quiz from "./components/pages/FlashCardQuiz";
+import CreateCourse from "./components/pages/CreateCourse";
+import CoursesList from "./components/pages/CoursesList";
+import CourseDetails from './components/pages/CourseDetails';
 
 
 function App() {
@@ -16,6 +19,9 @@ function App() {
       <Routes>
         <Route path="/about" element={<About />}/>
         <Route path="/quiz" element={<Quiz />}/>
+        <Route path="/createcourse" element={<CreateCourse />}/>
+        <Route path="/course/:id" element={<CourseDetails />} />
+        <Route path="/courses" element={<CoursesList />}/>
         <Route path="/" element={<Home />}/>
       </Routes>
 

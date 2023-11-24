@@ -12,9 +12,9 @@ namespace QMnemonic.Domain.Entities
     public class Course
     {
         public int Id {get; set;}
-        public List<Quiz> Quizzes {get; set;}
-        public List<InteractiveText>? InteractiveTexts {get; set;}
-        public Language Language {get; set;}
+        public List<Quiz> Quizzes {get; set;} 
+        public List<InteractiveText> InteractiveTexts {get; set;}
+        public string Language {get; set;}
         public string Name {get; set;}
     }
 }

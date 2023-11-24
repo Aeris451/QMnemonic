@@ -93,19 +93,6 @@ namespace QMnemonic.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Languages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Languages", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -212,29 +199,23 @@ namespace QMnemonic.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Course",
+                name: "Courses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LanguageId = table.Column<int>(type: "int", nullable: false),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Course", x => x.Id);
+                    table.PrimaryKey("PK_Courses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Course_Groups_GroupId",
+                        name: "FK_Courses_Groups_GroupId",
                         column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Course_Languages_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "Languages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -249,9 +230,9 @@ namespace QMnemonic.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_InteractiveTexts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_InteractiveTexts_Course_CourseId",
+                        name: "FK_InteractiveTexts_Courses_CourseId",
                         column: x => x.CourseId,
-                        principalTable: "Course",
+                        principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -271,9 +252,9 @@ namespace QMnemonic.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Quizzes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Quizzes_Course_CourseId",
+                        name: "FK_Quizzes_Courses_CourseId",
                         column: x => x.CourseId,
-                        principalTable: "Course",
+                        principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -384,14 +365,9 @@ namespace QMnemonic.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Course_GroupId",
-                table: "Course",
+                name: "IX_Courses_GroupId",
+                table: "Courses",
                 column: "GroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Course_LanguageId",
-                table: "Course",
-                column: "LanguageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InteractiveTexts_CourseId",
@@ -460,13 +436,10 @@ namespace QMnemonic.Infrastructure.Migrations
                 name: "InteractiveTexts");
 
             migrationBuilder.DropTable(
-                name: "Course");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Groups");
-
-            migrationBuilder.DropTable(
-                name: "Languages");
         }
     }
 }

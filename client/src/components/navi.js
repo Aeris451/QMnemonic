@@ -11,9 +11,10 @@ function Navi() {
     <>
       <Navbar className="navbar-shadow" bg="dark" data-bs-theme="dark" sticky="top" >
         <Container>
-          <Navbar.Brand href="/">Aeris<br />Learning</Navbar.Brand>
+          <Navbar.Brand href="/">Quick<br />Mnemonic</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/about">About</Nav.Link>
+            <Nav.Link href="/createcourse">Course create</Nav.Link>
             <Nav.Link href="/courses">Courses</Nav.Link>
             <Nav.Link href="/schools">Schools</Nav.Link>
             <Nav.Link href="/profile">Profile</Nav.Link>

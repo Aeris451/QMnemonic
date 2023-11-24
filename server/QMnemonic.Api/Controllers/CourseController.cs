@@ -1,12 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using QMnemonic.Application.Courses.Queries;
+using QMnemonic.Application.Commands.Courses;
+using QMnemonic.Application.Queries.Courses;
 using System.Threading.Tasks;
 
-namespace YourWebProject.Controllers
+namespace QMnemonic.API.Controllers
 {
+    [Route("api/[Controller]")]
     [ApiController]
-    [Route("api/courses")]
     public class CourseController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -16,21 +17,43 @@ namespace YourWebProject.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetCourseList()
+        [HttpPost]
+        public async Task<IActionResult> CreateCourse([FromBody] CreateCourseCommand command)
         {
-            try
+            if (command == null)
             {
-                var query = new GetCourseListQuery();
-                var result = await _mediator.Send(query);
+                return BadRequest();
+            }
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                
-                return StatusCode(500, $"Internal Server Error: {ex.Message}");
-            }
+            var courseId = await _mediator.Send(command);
+
+            
+            return Ok(new { CourseId = courseId });
         }
+
+
+        
+        [HttpGet]
+        public async Task<IActionResult> GetCourses()
+        {
+            var courses = await _mediator.Send(new GetCoursesListQuery());
+
+            return Ok(courses);
+        }
+
+[HttpGet("{id}")]
+public async Task<IActionResult> GetCourse(int id)
+{
+    var query = new GetCourseQuery { Id = id };
+    var course = await _mediator.Send(query);
+
+    if (course == null)
+    {
+        return NotFound(); // Zwróć 404 Not Found, jeśli kurs nie został znaleziony
+    }
+
+    return Ok(course); // Zwróć 200 OK z obiektem kursu
+}
+
     }
 }

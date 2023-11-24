@@ -2,6 +2,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using QMnemonic.Infrastructure.Data;
 using QMnemonic.Infrastructure.Identity;
+using QMnemonic.Application.Commands.Courses;
+using QMnemonic.Application.Queries.Courses;
+using Microsoft.Extensions.DependencyInjection;
+using MediatR;
+using System.Reflection;
+using QMnemonic.Infrastructure.Repositories;
+using QMnemonic.Domain.Repositories;
+using QMnemonic.Domain.Entities;
+
 
 
 
@@ -13,6 +22,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 
+
+builder.Services.AddMediatR(cfg => 
+    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+builder.Services.AddScoped<IAsyncRepository<Course>, CourseRepository>();
+
+builder.Services.AddScoped<IRequestHandler<CreateCourseCommand, int>, CreateCourseCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<GetCoursesListQuery, List<Course>>, GetCoursesListQueryHandler>();
+builder.Services.AddScoped<IRequestHandler<GetCourseQuery, Course>, GetCourseQueryHandler>();
+
+
+
+builder.Services.AddControllers();
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -30,31 +52,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
-
+app.UseRouting();
+app.MapControllers(); 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+
