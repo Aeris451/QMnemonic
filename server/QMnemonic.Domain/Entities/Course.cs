@@ -4,17 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using QMnemonic.Domain.Identity;
+using QMnemonic.Domain.VO;
 
 namespace QMnemonic.Domain.Entities
 {
 
 
-    public class Course
+    public class Course : Statistics
     {
         public int Id {get; set;}
-        public List<Quiz> Quizzes {get; set;} 
-        public List<InteractiveText> InteractiveTexts {get; set;}
-        public string Language {get; set;}
+        public List<Quiz> Quizzes {get; set;}
+        public List<InteractiveText> InteractiveTexts {get; set;} 
+        public Language Language {get; set;}
         public string Name {get; set;}
+        public string AuthorName {get; set;}
+        public string Description {get; set;} = String.Empty;
+        public int AuthorId {get; set;}
     }
 }

@@ -13,12 +13,10 @@ namespace QMnemonic.Domain.Entities
     public class Quiz
     {
         public int Id {get; set;}
+        public string Name {get; set;}
         public Course Course {get; set;}
-        public List<Question> Questions {get; set;}
+        public List<Question> Questions {get; set;} 
         public List<Answer> Answers {get; set;}
-        public int Correct { get; set; }
-        public int Wrong { get; set; }
-        public TimeSpan Spent {get; set;}
-
+        
     }
 }

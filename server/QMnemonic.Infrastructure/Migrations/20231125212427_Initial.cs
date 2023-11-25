@@ -33,6 +33,8 @@ namespace QMnemonic.Infrastructure.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    CoursesId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GroupsId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -57,7 +59,14 @@ namespace QMnemonic.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    MembersId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsersNumber = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,6 +99,20 @@ namespace QMnemonic.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_IdentityUserRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Languages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    LanguageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LanguageCode = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Languages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -204,9 +227,15 @@ namespace QMnemonic.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Language = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LanguageId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GroupId = table.Column<int>(type: "int", nullable: true)
+                    AuthorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AuthorId = table.Column<int>(type: "int", nullable: false),
+                    GroupId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsersNumber = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -216,6 +245,12 @@ namespace QMnemonic.Infrastructure.Migrations
                         column: x => x.GroupId,
                         principalTable: "Groups",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Courses_Languages_LanguageId",
+                        column: x => x.LanguageId,
+                        principalTable: "Languages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,6 +259,7 @@ namespace QMnemonic.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -243,10 +279,9 @@ namespace QMnemonic.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    Correct = table.Column<int>(type: "int", nullable: false),
-                    Wrong = table.Column<int>(type: "int", nullable: false),
-                    Spent = table.Column<TimeSpan>(type: "time", nullable: false)
+                    InteractiveTextId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -257,6 +292,11 @@ namespace QMnemonic.Infrastructure.Migrations
                         principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Quizzes_InteractiveTexts_InteractiveTextId",
+                        column: x => x.InteractiveTextId,
+                        principalTable: "InteractiveTexts",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -307,6 +347,7 @@ namespace QMnemonic.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     QuizId = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adnotations = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CorrectAnswerIds = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -370,6 +411,11 @@ namespace QMnemonic.Infrastructure.Migrations
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Courses_LanguageId",
+                table: "Courses",
+                column: "LanguageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InteractiveTexts_CourseId",
                 table: "InteractiveTexts",
                 column: "CourseId");
@@ -383,6 +429,11 @@ namespace QMnemonic.Infrastructure.Migrations
                 name: "IX_Quizzes_CourseId",
                 table: "Quizzes",
                 column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Quizzes_InteractiveTextId",
+                table: "Quizzes",
+                column: "InteractiveTextId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Text_InteractiveTextId",
@@ -440,6 +491,9 @@ namespace QMnemonic.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Groups");
+
+            migrationBuilder.DropTable(
+                name: "Languages");
         }
     }
 }

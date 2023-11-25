@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QMnemonic.Domain\QMnemonic.Domain.csproj" />
-    <ProjectReference Include="..\QMnemonic.Infrastructure\QMnemonic.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

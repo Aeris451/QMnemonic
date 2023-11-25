@@ -185,20 +185,41 @@ namespace QMnemonic.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Language")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UsersNumber")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
+
+                    b.HasIndex("LanguageId");
 
                     b.ToTable("Courses");
                 });
@@ -210,6 +231,30 @@ namespace QMnemonic.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MembersId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UsersNumber")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -227,11 +272,36 @@ namespace QMnemonic.Infrastructure.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
 
                     b.ToTable("InteractiveTexts");
+                });
+
+            modelBuilder.Entity("QMnemonic.Domain.Entities.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LanguageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Question", b =>
@@ -241,6 +311,10 @@ namespace QMnemonic.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adnotations")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -268,21 +342,21 @@ namespace QMnemonic.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Correct")
-                        .HasColumnType("int");
-
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("Spent")
-                        .HasColumnType("time");
-
-                    b.Property<int>("Wrong")
+                    b.Property<int?>("InteractiveTextId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("InteractiveTextId");
 
                     b.ToTable("Quizzes");
                 });
@@ -340,6 +414,10 @@ namespace QMnemonic.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CoursesId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -348,6 +426,10 @@ namespace QMnemonic.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupsId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -488,6 +570,14 @@ namespace QMnemonic.Infrastructure.Migrations
                     b.HasOne("QMnemonic.Domain.Entities.Group", null)
                         .WithMany("Courses")
                         .HasForeignKey("GroupId");
+
+                    b.HasOne("QMnemonic.Domain.Entities.Language", "Language")
+                        .WithMany("Courses")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.InteractiveText", b =>
@@ -520,6 +610,10 @@ namespace QMnemonic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("QMnemonic.Domain.Entities.InteractiveText", null)
+                        .WithMany("Quizzes")
+                        .HasForeignKey("InteractiveTextId");
+
                     b.Navigation("Course");
                 });
 
@@ -548,7 +642,14 @@ namespace QMnemonic.Infrastructure.Migrations
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.InteractiveText", b =>
                 {
+                    b.Navigation("Quizzes");
+
                     b.Navigation("Texts");
+                });
+
+            modelBuilder.Entity("QMnemonic.Domain.Entities.Language", b =>
+                {
+                    b.Navigation("Courses");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Quiz", b =>

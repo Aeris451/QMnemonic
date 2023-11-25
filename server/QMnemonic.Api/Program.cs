@@ -4,12 +4,12 @@ using QMnemonic.Infrastructure.Data;
 using QMnemonic.Infrastructure.Identity;
 using QMnemonic.Application.Commands.Courses;
 using QMnemonic.Application.Queries.Courses;
-using Microsoft.Extensions.DependencyInjection;
 using MediatR;
 using System.Reflection;
 using QMnemonic.Infrastructure.Repositories;
 using QMnemonic.Domain.Repositories;
 using QMnemonic.Domain.Entities;
+using QMnemonic.Application.Queries.Languages;
 
 
 
@@ -21,16 +21,22 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddMediatR(cfg => 
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
 builder.Services.AddScoped<IAsyncRepository<Course>, CourseRepository>();
+builder.Services.AddScoped<IAsyncRepository<Language>, LanguageRepository>(); 
+builder.Services.AddScoped<IAsyncRepository<Quiz>, QuizRepository>(); 
+
+//builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
+
 
 builder.Services.AddScoped<IRequestHandler<CreateCourseCommand, int>, CreateCourseCommandHandler>();
-builder.Services.AddScoped<IRequestHandler<GetCoursesListQuery, List<Course>>, GetCoursesListQueryHandler>();
+builder.Services.AddScoped<IRequestHandler<GetCoursesListQuery, List<CourseListDTO>>, GetCoursesListQueryHandler>();
 builder.Services.AddScoped<IRequestHandler<GetCourseQuery, Course>, GetCourseQueryHandler>();
+//builder.Services.AddScoped<IRequestHandler<GetLanguageQuery, Language>, GetLanguageQueryHandler>();
 
 
 

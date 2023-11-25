@@ -15,7 +15,6 @@ namespace QMnemonic.Domain.Entities
     {   
         public int Id {get; set;}
         public InteractiveText InteractiveText {get; set;}
-
         public string Content {get; set;}
 
 
