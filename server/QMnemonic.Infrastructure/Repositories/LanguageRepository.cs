@@ -2,15 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using QMnemonic.Domain.Repositories;
 using QMnemonic.Domain.Entities;
+using QMnemonic.Domain.Repositories;
 using QMnemonic.Infrastructure.Data;
 
 namespace QMnemonic.Infrastructure.Repositories
 {
-    public class LanguageRepository : IAsyncRepository<Language>
+    public class LanguageRepository : ILanguageRepository
     {
-
 
         private readonly ApplicationDbContext _context;
 
@@ -18,6 +17,7 @@ namespace QMnemonic.Infrastructure.Repositories
         {
             _context = context;
         }
+
 
         public Task AddAsync(Language value)
         {
@@ -38,8 +38,6 @@ namespace QMnemonic.Infrastructure.Repositories
         {
             return await _context.Languages.FindAsync(Id);
         }
-
-        
 
         public Task UpdateAsync(Language value)
         {

@@ -12,10 +12,10 @@ namespace QMnemonic.Application.Commands.Courses
     public class CreateCourseCommand : IRequest<int>
     {
         public string Name{ get; set; }
+        public string Description {get; set;} = String.Empty;
+        public string ShortDescription {get; set;} = String.Empty;
         public int LanguageId {get; set;}
-        public string Author = "test";
-        
-
+        public int AuthorId = 1;
     }
 
 

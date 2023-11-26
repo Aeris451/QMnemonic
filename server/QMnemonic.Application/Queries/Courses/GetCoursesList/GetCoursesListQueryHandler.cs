@@ -11,11 +11,11 @@ namespace QMnemonic.Application.Queries.Courses
 {
     public class GetCoursesListQueryHandler : IRequestHandler<GetCoursesListQuery, List<CourseListDTO>>
     {
-        private readonly IAsyncRepository<Course> _courseRepository;
+        private readonly ICourseRepository _courseRepository;
         private readonly IMapper _mapper; 
 
 
-        public GetCoursesListQueryHandler(IAsyncRepository<Course> courseRepository, IMapper mapper)
+        public GetCoursesListQueryHandler(ICourseRepository courseRepository, IMapper mapper)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
@@ -26,8 +26,8 @@ namespace QMnemonic.Application.Queries.Courses
         {
 
 
-            var courses = await _courseRepository.GetAllAsync();
-            var coursesDTO = _mapper.Map<List<CourseListDTO>>(courses); 
+            var courses = await _courseRepository.GetByLanguageAsync(request.LangageId);
+            var coursesDTO = _mapper.Map<List<CourseListDTO>>(courses);
             
 
             return coursesDTO;

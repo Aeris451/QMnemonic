@@ -1,15 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using QMnemonic.Domain.Entities;
 using QMnemonic.Domain.Repositories;
 using QMnemonic.Infrastructure.Data;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace QMnemonic.Infrastructure.Repositories
 {
-    public class QuizRepository : IAsyncRepository<Quiz>
+    public class QuizRepository : IQuizRepository
     {
+
         private readonly ApplicationDbContext _context;
 
         public QuizRepository(ApplicationDbContext context)
@@ -23,15 +26,21 @@ namespace QMnemonic.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Quiz value)
+        public Task DeleteAsync(Quiz value)
         {
-            _context.Quizzes.Remove(value);
-            await _context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Quiz>> GetAllAsync()
+        public Task<IEnumerable<Quiz>> GetAllAsync()
         {
-            return await _context.Quizzes.ToListAsync();
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Quiz>> GetByCourse(int courseId)
+        {
+            return await _context.Quizzes
+            .Where(quiz => quiz.Course.Id == courseId)
+            .ToListAsync();
         }
 
         public async Task<Quiz> GetByIdAsync(int Id)
@@ -41,6 +50,7 @@ namespace QMnemonic.Infrastructure.Repositories
 
         public async Task UpdateAsync(Quiz value)
         {
+
             _context.Entry(value).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }

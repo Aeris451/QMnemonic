@@ -229,8 +229,8 @@ namespace QMnemonic.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LanguageId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AuthorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShortDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AuthorId = table.Column<int>(type: "int", nullable: false),
                     GroupId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -254,34 +254,15 @@ namespace QMnemonic.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InteractiveTexts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CourseId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InteractiveTexts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InteractiveTexts_Courses_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Quizzes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    InteractiveTextId = table.Column<int>(type: "int", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SelectableContent = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -292,29 +273,24 @@ namespace QMnemonic.Infrastructure.Migrations
                         principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Quizzes_InteractiveTexts_InteractiveTextId",
-                        column: x => x.InteractiveTextId,
-                        principalTable: "InteractiveTexts",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Text",
+                name: "Readings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    InteractiveTextId = table.Column<int>(type: "int", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CourseId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Text", x => x.Id);
+                    table.PrimaryKey("PK_Readings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Text_InteractiveTexts_InteractiveTextId",
-                        column: x => x.InteractiveTextId,
-                        principalTable: "InteractiveTexts",
+                        name: "FK_Readings_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -340,25 +316,52 @@ namespace QMnemonic.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Texts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReadingId = table.Column<int>(type: "int", nullable: false),
+                    OrgContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConvContent = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Texts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Texts_Readings_ReadingId",
+                        column: x => x.ReadingId,
+                        principalTable: "Readings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Questions",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    AnswerId = table.Column<int>(type: "int", nullable: false),
                     QuizId = table.Column<int>(type: "int", nullable: false),
+                    SContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adnotations = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CorrectAnswerIds = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Annotations = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Questions", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Questions_Answers_AnswerId",
+                        column: x => x.AnswerId,
+                        principalTable: "Answers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Questions_Quizzes_QuizId",
                         column: x => x.QuizId,
                         principalTable: "Quizzes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -416,9 +419,10 @@ namespace QMnemonic.Infrastructure.Migrations
                 column: "LanguageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InteractiveTexts_CourseId",
-                table: "InteractiveTexts",
-                column: "CourseId");
+                name: "IX_Questions_AnswerId",
+                table: "Questions",
+                column: "AnswerId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_QuizId",
@@ -431,22 +435,20 @@ namespace QMnemonic.Infrastructure.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Quizzes_InteractiveTextId",
-                table: "Quizzes",
-                column: "InteractiveTextId");
+                name: "IX_Readings_CourseId",
+                table: "Readings",
+                column: "CourseId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Text_InteractiveTextId",
-                table: "Text",
-                column: "InteractiveTextId");
+                name: "IX_Texts_ReadingId",
+                table: "Texts",
+                column: "ReadingId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Answers");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -472,7 +474,7 @@ namespace QMnemonic.Infrastructure.Migrations
                 name: "Questions");
 
             migrationBuilder.DropTable(
-                name: "Text");
+                name: "Texts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -481,10 +483,13 @@ namespace QMnemonic.Infrastructure.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Quizzes");
+                name: "Answers");
 
             migrationBuilder.DropTable(
-                name: "InteractiveTexts");
+                name: "Readings");
+
+            migrationBuilder.DropTable(
+                name: "Quizzes");
 
             migrationBuilder.DropTable(
                 name: "Courses");

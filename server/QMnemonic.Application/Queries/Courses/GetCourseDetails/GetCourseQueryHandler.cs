@@ -10,9 +10,9 @@ namespace QMnemonic.Application.Queries.Courses;
   
 public class GetCourseQueryHandler : IRequestHandler<GetCourseQuery, Course>
     {
-        private readonly IAsyncRepository<Course> _courseRepository;
+        private readonly ICourseRepository _courseRepository;
 
-        public GetCourseQueryHandler(IAsyncRepository<Course> courseRepository)
+        public GetCourseQueryHandler(ICourseRepository courseRepository)
         {
             _courseRepository = courseRepository;
         }

@@ -11,12 +11,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ApplicationRole> IdentityRoles { get; set; }
     public DbSet<ApplicationUserRole> IdentityUserRoles { get; set; }
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+    
     public DbSet<Course> Courses { get; set; }
     public DbSet<Group> Groups { get; set; }
     public DbSet<Quiz> Quizzes { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<Answer> Answers { get; set; }
-    public DbSet<InteractiveText> InteractiveTexts { get; set; }
+    public DbSet<Reading> Readings { get; set; }
+    public DbSet<Text> Texts { get; set; }
     public DbSet<Language> Languages {get; set;}
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -27,6 +30,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Question>()
+            .HasOne(q => q.Quiz)
+            .WithMany(q => q.Questions)
+            .HasForeignKey(q => q.QuizId)
+            .OnDelete(DeleteBehavior.NoAction);
+        
 
     }
 }

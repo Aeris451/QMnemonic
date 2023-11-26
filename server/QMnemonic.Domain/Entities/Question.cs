@@ -13,11 +13,13 @@ namespace QMnemonic.Domain.Entities
     public class Question
     {
         public int Id {get; set;}
+        public int AnswerId {get; set;}
+        public int QuizId {get; set;}
         public Quiz Quiz {get; set;}
+        public Answer Answer {get; set;}
+        public string SContent {get; set;}
         public string Content {get; set;}
-        public List<string> Adnotations {get; set;}
-        public List<int> CorrectAnswerIds { get; set; }
-
-
+        public string Annotations {get; set;}
+        
     }
 }

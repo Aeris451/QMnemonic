@@ -6,8 +6,8 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        CreateMap<Course, CourseListDTO>();
-
+CreateMap<Course, CourseListDTO>()
+    .ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.Language.LanguageName));
 
 
     }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QMnemonic.Infrastructure.Repositories
 {
-    public class CourseRepository : IAsyncRepository<Course>
+    public class CourseRepository : IAsyncRepository<Course>, ICourseRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -43,6 +43,14 @@ namespace QMnemonic.Infrastructure.Repositories
         {
             _context.Entry(value).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<IEnumerable<Course>> GetByLanguageAsync(int id)
+        {
+            return await _context.Courses
+            .Where(course => course.Language.Id == id)
+            .ToListAsync();
         }
     }
 }

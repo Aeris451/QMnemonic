@@ -12,8 +12,9 @@ namespace QMnemonic.Domain.Entities
     public class Answer
     {
         public int Id {get; set;}
-        public string Content {get; set;} = String.Empty;
+        public string Content {get; set;}
         public Quiz Quiz {get; set;}
+        public Question Question {get; set;}
 
     }
 }

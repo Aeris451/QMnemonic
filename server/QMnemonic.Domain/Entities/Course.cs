@@ -14,12 +14,12 @@ namespace QMnemonic.Domain.Entities
     public class Course : Statistics
     {
         public int Id {get; set;}
-        public List<Quiz> Quizzes {get; set;}
-        public List<InteractiveText> InteractiveTexts {get; set;} 
+        public List<Quiz> Quizzes {get; set;} = new List<Quiz>();
+        public Reading Reading {get; set;}
         public Language Language {get; set;}
-        public string Name {get; set;}
-        public string AuthorName {get; set;}
-        public string Description {get; set;} = String.Empty;
+        public string Name {get; set;} 
+        public string Description {get; set;} 
+        public string ShortDescription {get; set;}
         public int AuthorId {get; set;}
     }
 }

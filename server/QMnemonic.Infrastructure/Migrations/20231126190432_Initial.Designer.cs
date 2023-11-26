@@ -12,7 +12,7 @@ using QMnemonic.Infrastructure.Data;
 namespace QMnemonic.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231125212427_Initial")]
+    [Migration("20231126190432_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -191,10 +191,6 @@ namespace QMnemonic.Infrastructure.Migrations
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("AuthorName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -209,6 +205,10 @@ namespace QMnemonic.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortDescription")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -264,28 +264,6 @@ namespace QMnemonic.Infrastructure.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("QMnemonic.Domain.Entities.InteractiveText", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("InteractiveTexts");
-                });
-
             modelBuilder.Entity("QMnemonic.Domain.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
@@ -315,22 +293,28 @@ namespace QMnemonic.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adnotations")
+                    b.Property<string>("Annotations")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AnswerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CorrectAnswerIds")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("QuizId")
                         .HasColumnType("int");
 
+                    b.Property<string>("SContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AnswerId")
+                        .IsUnique();
 
                     b.HasIndex("QuizId");
 
@@ -348,7 +332,34 @@ namespace QMnemonic.Infrastructure.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("InteractiveTextId")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SelectableContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Quizzes");
+                });
+
+            modelBuilder.Entity("QMnemonic.Domain.Entities.Reading", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CourseId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -357,11 +368,10 @@ namespace QMnemonic.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("CourseId")
+                        .IsUnique();
 
-                    b.HasIndex("InteractiveTextId");
-
-                    b.ToTable("Quizzes");
+                    b.ToTable("Readings");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Text", b =>
@@ -372,18 +382,22 @@ namespace QMnemonic.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Content")
+                    b.Property<string>("ConvContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("InteractiveTextId")
+                    b.Property<string>("OrgContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReadingId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InteractiveTextId");
+                    b.HasIndex("ReadingId");
 
-                    b.ToTable("Text");
+                    b.ToTable("Texts");
                 });
 
             modelBuilder.Entity("QMnemonic.Infrastructure.Identity.ApplicationRole", b =>
@@ -575,7 +589,7 @@ namespace QMnemonic.Infrastructure.Migrations
                         .HasForeignKey("GroupId");
 
                     b.HasOne("QMnemonic.Domain.Entities.Language", "Language")
-                        .WithMany("Courses")
+                        .WithMany()
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -583,24 +597,21 @@ namespace QMnemonic.Infrastructure.Migrations
                     b.Navigation("Language");
                 });
 
-            modelBuilder.Entity("QMnemonic.Domain.Entities.InteractiveText", b =>
+            modelBuilder.Entity("QMnemonic.Domain.Entities.Question", b =>
                 {
-                    b.HasOne("QMnemonic.Domain.Entities.Course", "Course")
-                        .WithMany("InteractiveTexts")
-                        .HasForeignKey("CourseId")
+                    b.HasOne("QMnemonic.Domain.Entities.Answer", "Answer")
+                        .WithOne("Question")
+                        .HasForeignKey("QMnemonic.Domain.Entities.Question", "AnswerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("QMnemonic.Domain.Entities.Question", b =>
-                {
                     b.HasOne("QMnemonic.Domain.Entities.Quiz", "Quiz")
                         .WithMany("Questions")
                         .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Answer");
 
                     b.Navigation("Quiz");
                 });
@@ -613,44 +624,46 @@ namespace QMnemonic.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QMnemonic.Domain.Entities.InteractiveText", null)
-                        .WithMany("Quizzes")
-                        .HasForeignKey("InteractiveTextId");
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("QMnemonic.Domain.Entities.Reading", b =>
+                {
+                    b.HasOne("QMnemonic.Domain.Entities.Course", "Course")
+                        .WithOne("Reading")
+                        .HasForeignKey("QMnemonic.Domain.Entities.Reading", "CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Course");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Text", b =>
                 {
-                    b.HasOne("QMnemonic.Domain.Entities.InteractiveText", "InteractiveText")
+                    b.HasOne("QMnemonic.Domain.Entities.Reading", "Reading")
                         .WithMany("Texts")
-                        .HasForeignKey("InteractiveTextId")
+                        .HasForeignKey("ReadingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("InteractiveText");
+                    b.Navigation("Reading");
+                });
+
+            modelBuilder.Entity("QMnemonic.Domain.Entities.Answer", b =>
+                {
+                    b.Navigation("Question")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Course", b =>
                 {
-                    b.Navigation("InteractiveTexts");
-
                     b.Navigation("Quizzes");
+
+                    b.Navigation("Reading")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Group", b =>
-                {
-                    b.Navigation("Courses");
-                });
-
-            modelBuilder.Entity("QMnemonic.Domain.Entities.InteractiveText", b =>
-                {
-                    b.Navigation("Quizzes");
-
-                    b.Navigation("Texts");
-                });
-
-            modelBuilder.Entity("QMnemonic.Domain.Entities.Language", b =>
                 {
                     b.Navigation("Courses");
                 });
@@ -660,6 +673,11 @@ namespace QMnemonic.Infrastructure.Migrations
                     b.Navigation("Answers");
 
                     b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("QMnemonic.Domain.Entities.Reading", b =>
+                {
+                    b.Navigation("Texts");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,9 +10,9 @@ namespace QMnemonic.Application.Commands.Courses
 {
     public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, int>
     {
-        private readonly IAsyncRepository<Course> _courseRepository;
-        private readonly IAsyncRepository<Language> _languageRepository;
-        public CreateCourseCommandHandler(IAsyncRepository<Course> courseRepository, IAsyncRepository<Language> languageRepository)
+        private readonly ICourseRepository _courseRepository;
+        private readonly ILanguageRepository _languageRepository;
+        public CreateCourseCommandHandler(ICourseRepository courseRepository, ILanguageRepository languageRepository)
         {
             _courseRepository = courseRepository;
             _languageRepository = languageRepository;
@@ -25,10 +25,10 @@ namespace QMnemonic.Application.Commands.Courses
             var newCourse = new Course
             {
                 Name = request.Name,
-                AuthorName = request.Author,
-                Quizzes = new List<Quiz>(),
-                InteractiveTexts = new List<InteractiveText>(),
-                Language = await _languageRepository.GetByIdAsync(request.LanguageId)
+                AuthorId = request.AuthorId,
+                Description = request.Description,
+                ShortDescription = request.ShortDescription,
+                Language = await _languageRepository.GetByIdAsync(request.LanguageId),
             };
             
 

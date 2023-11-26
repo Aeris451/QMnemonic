@@ -10,6 +10,10 @@ using QMnemonic.Infrastructure.Repositories;
 using QMnemonic.Domain.Repositories;
 using QMnemonic.Domain.Entities;
 using QMnemonic.Application.Queries.Languages;
+using QMnemonic.Application.Commands.Quizzes;
+using QMnemonic.Application.Queries.Quizs;
+using QMnemonic.Application.Queries.Quizzes;
+
 
 
 
@@ -21,21 +25,30 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+
 
 builder.Services.AddMediatR(cfg => 
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
-builder.Services.AddScoped<IAsyncRepository<Course>, CourseRepository>();
-builder.Services.AddScoped<IAsyncRepository<Language>, LanguageRepository>(); 
-builder.Services.AddScoped<IAsyncRepository<Quiz>, QuizRepository>(); 
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ILanguageRepository, LanguageRepository>(); 
+builder.Services.AddScoped<IQuizRepository, QuizRepository>(); 
 
 //builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
 
 builder.Services.AddScoped<IRequestHandler<CreateCourseCommand, int>, CreateCourseCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AddQuizToCourseCommand, int>, AddQuizToCourseCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AddQuestionToQuizCommand>, AddQuestionToQuizCommandHandler>();
+//builder.Services.AddScoped<IRequestHandler<AddAnswersToQuizCommand>, AddAnswersToQuizCommandHandler>();
+
+
+
 builder.Services.AddScoped<IRequestHandler<GetCoursesListQuery, List<CourseListDTO>>, GetCoursesListQueryHandler>();
 builder.Services.AddScoped<IRequestHandler<GetCourseQuery, Course>, GetCourseQueryHandler>();
+builder.Services.AddScoped<IRequestHandler<GetQuizQuery, Quiz>, GetQuizQueryHandler>();
 //builder.Services.AddScoped<IRequestHandler<GetLanguageQuery, Language>, GetLanguageQueryHandler>();
 
 

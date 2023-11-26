@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
+using QMnemonic.Application.Commands.Quizzes;
 using QMnemonic.Domain.Entities;
 using QMnemonic.Domain.Repositories;
 
@@ -10,9 +11,9 @@ namespace QMnemonic.Application.Commands.Courses
 {
     public class AddQuizToCourseCommandHandler : IRequestHandler<AddQuizToCourseCommand, int>
     {
-    private readonly IAsyncRepository<Course> _courseRepository;
+    private readonly ICourseRepository _courseRepository;
 
-    public AddQuizToCourseCommandHandler(IAsyncRepository<Course> courseRepository)
+    public AddQuizToCourseCommandHandler(ICourseRepository courseRepository)
     {
         _courseRepository = courseRepository;
     }
@@ -22,12 +23,15 @@ namespace QMnemonic.Application.Commands.Courses
             var course = await _courseRepository.GetByIdAsync(request.CourseId);
 
 
+
             var newQuiz = new Quiz
             {
                 Name = request.Name,
-               
+                Description = request.Description,
+                Course = course,
+                CourseId = request.CourseId
             };
-            
+
             course.Quizzes.Add(newQuiz);
 
             await _courseRepository.UpdateAsync(course);
