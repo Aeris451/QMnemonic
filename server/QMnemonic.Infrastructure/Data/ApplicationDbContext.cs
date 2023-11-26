@@ -30,12 +30,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
-        modelBuilder.Entity<Question>()
-            .HasOne(q => q.Quiz)
-            .WithMany(q => q.Questions)
-            .HasForeignKey(q => q.QuizId)
-            .OnDelete(DeleteBehavior.NoAction);
         
 
     }

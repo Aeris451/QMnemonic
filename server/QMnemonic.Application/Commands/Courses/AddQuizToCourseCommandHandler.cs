@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using MediatR;
 using QMnemonic.Application.Commands.Quizzes;
@@ -28,11 +29,14 @@ namespace QMnemonic.Application.Commands.Courses
             {
                 Name = request.Name,
                 Description = request.Description,
-                Course = course,
                 CourseId = request.CourseId
             };
 
             course.Quizzes.Add(newQuiz);
+
+            foreach(var item in course.Quizzes){
+                Console.WriteLine(item.Name);
+            }
 
             await _courseRepository.UpdateAsync(course);
 

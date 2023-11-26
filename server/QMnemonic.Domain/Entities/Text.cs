@@ -14,7 +14,6 @@ namespace QMnemonic.Domain.Entities
     public class Text
     {   
         public int Id {get; set;}
-        public Reading Reading {get; set;}
         public string OrgContent {get; set;}
         public string ConvContent {get; set;}
     }

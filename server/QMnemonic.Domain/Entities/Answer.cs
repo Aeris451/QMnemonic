@@ -13,8 +13,6 @@ namespace QMnemonic.Domain.Entities
     {
         public int Id {get; set;}
         public string Content {get; set;}
-        public Quiz Quiz {get; set;}
-        public Question Question {get; set;}
 
     }
 }

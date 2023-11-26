@@ -15,7 +15,6 @@ namespace QMnemonic.Domain.Entities
         public int Id {get; set;}
         public int AnswerId {get; set;}
         public int QuizId {get; set;}
-        public Quiz Quiz {get; set;}
         public Answer Answer {get; set;}
         public string SContent {get; set;}
         public string Content {get; set;}

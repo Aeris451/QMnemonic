@@ -36,7 +36,11 @@ namespace QMnemonic.Infrastructure.Repositories
 
         public async Task<Course> GetByIdAsync(int Id)
         {
-            return await _context.Courses.FindAsync(Id);
+            return await _context.Courses
+            .Include(c => c.Quizzes)
+            .Include(c => c.Reading)
+            .Include(c => c.Language)
+            .FirstOrDefaultAsync(c => c.Id == Id);
         }
 
         public async Task UpdateAsync(Course value)
@@ -46,10 +50,10 @@ namespace QMnemonic.Infrastructure.Repositories
         }
 
 
-        public async Task<IEnumerable<Course>> GetByLanguageAsync(int id)
+        public async Task<IEnumerable<Course>> GetByLanguageAsync(string code)
         {
             return await _context.Courses
-            .Where(course => course.Language.Id == id)
+            .Where(course => course.Language.LanguageCode == code)
             .ToListAsync();
         }
     }

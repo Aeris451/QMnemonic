@@ -31,7 +31,6 @@ namespace QMnemonic.Application.Commands.Quizzes
                 Annotations = request.Annotations,
                 Answer = new Answer 
                 {
-                    Quiz = quiz,
                     Content = request.AnswerContent
                 }
             };

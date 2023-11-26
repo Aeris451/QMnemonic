@@ -22,14 +22,14 @@ namespace QMnemonic.Api.Controllers
 
 
         [HttpPost]
-        [Route("api/[controller]/create")]
-        public async Task<IActionResult> CreateCourse([FromBody] CreateCourseCommand command)
+        [Route("create")]
+        public async Task<IActionResult> CreateCourse([FromBody] AddCourseCommand command)
         {
             if (command == null)
             {
                 return BadRequest();
             }
-            
+
             var Courseid = await _mediator.Send(command);
 
             return Ok(Courseid);
@@ -37,14 +37,14 @@ namespace QMnemonic.Api.Controllers
 
 
         [HttpPost]
-        [Route("api/[controller]/course/createquiz")]
+        [Route("createquiz")]
         public async Task<IActionResult> CreateQuiz([FromBody] AddQuizToCourseCommand command)
         {
             if (command == null)
             {
                 return BadRequest();
             }
-            
+
             var Quizid = await _mediator.Send(command);
 
             return Ok(Quizid);
@@ -52,12 +52,12 @@ namespace QMnemonic.Api.Controllers
 
 
 
-/*
-        [HttpGet("{language}")]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses(int LanguageId)
+
+        [HttpGet("Courses/{langCode}")]
+        public async Task<ActionResult<IEnumerable<Course>>> GetCourses(string langCode)
         {
 
-            var query = new GetCoursesListQuery { Language = languageId };
+            var query = new GetCoursesListQuery { LangageCode = langCode };
             var result = await _mediator.Send(query);
 
             if (result == null)
@@ -68,13 +68,11 @@ namespace QMnemonic.Api.Controllers
             return Ok(result);
         }
 
-        */
 
-        // Kontroler dla wybranego kursu
-        [HttpGet("{language}/{courseId}/{courseTitle}")]
-        public async Task<ActionResult<Course>> GetCourse(string language, int courseId, string courseTitle)
+        [HttpGet("{courseId}")]
+        public async Task<ActionResult<Course>> GetCourse(int courseId)
         {
-            var command = new GetCourseQuery { Id = courseId };//, Language = language };
+            var command = new GetCourseQuery { Id = courseId };
             var result = await _mediator.Send(command);
 
             if (result == null)
@@ -86,11 +84,11 @@ namespace QMnemonic.Api.Controllers
         }
 
 
-        [HttpGet("{courseId}/{language}/{quizId}")]
-        public async Task<ActionResult<Quiz>> GetQuiz(int courseId, string language, int quizId)
+        [HttpGet("{courseId}/{order}")]
+        public async Task<ActionResult<Quiz>> GetQuiz(int courseId, int order)
         {
             // Tutaj możesz użyć odpowiedniego mechanizmu do pobrania quizu dla danego kursu i quizu
-            var query = new GetQuizQuery { /*CourseId = courseId, Language = language,*/ Id = quizId };
+            var query = new GetQuizQuery { CourseId = courseId, QuizOrder = order };
             var result = await _mediator.Send(query);
 
             if (result == null)

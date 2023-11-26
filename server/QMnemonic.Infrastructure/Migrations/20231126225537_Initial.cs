@@ -302,7 +302,7 @@ namespace QMnemonic.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    QuizId = table.Column<int>(type: "int", nullable: false)
+                    QuizId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -311,8 +311,7 @@ namespace QMnemonic.Infrastructure.Migrations
                         name: "FK_Answers_Quizzes_QuizId",
                         column: x => x.QuizId,
                         principalTable: "Quizzes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -321,9 +320,9 @@ namespace QMnemonic.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ReadingId = table.Column<int>(type: "int", nullable: false),
                     OrgContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConvContent = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ConvContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReadingId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -332,8 +331,7 @@ namespace QMnemonic.Infrastructure.Migrations
                         name: "FK_Texts_Readings_ReadingId",
                         column: x => x.ReadingId,
                         principalTable: "Readings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -361,7 +359,8 @@ namespace QMnemonic.Infrastructure.Migrations
                         name: "FK_Questions_Quizzes_QuizId",
                         column: x => x.QuizId,
                         principalTable: "Quizzes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -421,8 +420,7 @@ namespace QMnemonic.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_AnswerId",
                 table: "Questions",
-                column: "AnswerId",
-                unique: true);
+                column: "AnswerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Questions_QuizId",

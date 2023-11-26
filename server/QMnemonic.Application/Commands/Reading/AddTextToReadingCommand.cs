@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
-using QMnemonic.Domain.Entities;
 
-namespace QMnemonic.Application.Queries.Quizzes
+namespace QMnemonic.Application.Commands.Readings
 {
-    public class GetQuizQuery: IRequest<Quiz>
+    public class AddTextToReadingCommand : IRequest
     {
         public int CourseId {get; set;}
-        public int QuizOrder {get; set;}
+        public string Content {get; set;}
     }
 }

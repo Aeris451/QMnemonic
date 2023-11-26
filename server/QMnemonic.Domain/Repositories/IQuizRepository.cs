@@ -8,6 +8,6 @@ namespace QMnemonic.Domain.Repositories
 {
     public interface IQuizRepository :IAsyncRepository<Quiz>
     {
-        Task<IEnumerable<Quiz>> GetByCourse(int courseId);   
+
     }
 }

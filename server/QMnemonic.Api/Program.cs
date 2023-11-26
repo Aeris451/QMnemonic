@@ -13,6 +13,8 @@ using QMnemonic.Application.Queries.Languages;
 using QMnemonic.Application.Commands.Quizzes;
 using QMnemonic.Application.Queries.Quizs;
 using QMnemonic.Application.Queries.Quizzes;
+using QMnemonic.Application.Mappings;
+using System.Text.Json.Serialization;
 
 
 
@@ -25,7 +27,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(MapperProfile));
+
 
 
 
@@ -39,8 +42,9 @@ builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 //builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
 
-builder.Services.AddScoped<IRequestHandler<CreateCourseCommand, int>, CreateCourseCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AddCourseCommand, int>, AddCourseCommandHandler>();
 builder.Services.AddScoped<IRequestHandler<AddQuizToCourseCommand, int>, AddQuizToCourseCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AddReadingToCourseCommand>, AddReadingToCourseCommandHandler>();
 builder.Services.AddScoped<IRequestHandler<AddQuestionToQuizCommand>, AddQuestionToQuizCommandHandler>();
 //builder.Services.AddScoped<IRequestHandler<AddAnswersToQuizCommand>, AddAnswersToQuizCommandHandler>();
 
@@ -53,7 +57,13 @@ builder.Services.AddScoped<IRequestHandler<GetQuizQuery, Quiz>, GetQuizQueryHand
 
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                // inne opcje
+            });
+
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

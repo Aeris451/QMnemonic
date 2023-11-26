@@ -8,17 +8,17 @@ using QMnemonic.Domain.Repositories;
 
 namespace QMnemonic.Application.Commands.Courses
 {
-    public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, int>
+    public class AddCourseCommandHandler : IRequestHandler<AddCourseCommand, int>
     {
         private readonly ICourseRepository _courseRepository;
         private readonly ILanguageRepository _languageRepository;
-        public CreateCourseCommandHandler(ICourseRepository courseRepository, ILanguageRepository languageRepository)
+        public AddCourseCommandHandler(ICourseRepository courseRepository, ILanguageRepository languageRepository)
         {
             _courseRepository = courseRepository;
             _languageRepository = languageRepository;
         }
 
-        public async Task<int> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddCourseCommand request, CancellationToken cancellationToken)
         {
             
 

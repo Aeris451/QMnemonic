@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace QMnemonic.Application.Commands.Courses
 {
-    public class CreateCourseCommand : IRequest<int>
+    public class AddCourseCommand : IRequest<int>
     {
         public string Name{ get; set; }
         public string Description {get; set;} = String.Empty;

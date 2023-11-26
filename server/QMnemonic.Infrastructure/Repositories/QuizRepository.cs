@@ -36,12 +36,7 @@ namespace QMnemonic.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Quiz>> GetByCourse(int courseId)
-        {
-            return await _context.Quizzes
-            .Where(quiz => quiz.Course.Id == courseId)
-            .ToListAsync();
-        }
+
 
         public async Task<Quiz> GetByIdAsync(int Id)
         {

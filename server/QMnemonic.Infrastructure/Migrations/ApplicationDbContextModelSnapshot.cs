@@ -167,7 +167,7 @@ namespace QMnemonic.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QuizId")
+                    b.Property<int?>("QuizId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -310,8 +310,7 @@ namespace QMnemonic.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnswerId")
-                        .IsUnique();
+                    b.HasIndex("AnswerId");
 
                     b.HasIndex("QuizId");
 
@@ -387,7 +386,7 @@ namespace QMnemonic.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReadingId")
+                    b.Property<int?>("ReadingId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -570,13 +569,9 @@ namespace QMnemonic.Infrastructure.Migrations
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Answer", b =>
                 {
-                    b.HasOne("QMnemonic.Domain.Entities.Quiz", "Quiz")
+                    b.HasOne("QMnemonic.Domain.Entities.Quiz", null)
                         .WithMany("Answers")
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Quiz");
+                        .HasForeignKey("QuizId");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Course", b =>
@@ -597,31 +592,27 @@ namespace QMnemonic.Infrastructure.Migrations
             modelBuilder.Entity("QMnemonic.Domain.Entities.Question", b =>
                 {
                     b.HasOne("QMnemonic.Domain.Entities.Answer", "Answer")
-                        .WithOne("Question")
-                        .HasForeignKey("QMnemonic.Domain.Entities.Question", "AnswerId")
+                        .WithMany()
+                        .HasForeignKey("AnswerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QMnemonic.Domain.Entities.Quiz", "Quiz")
+                    b.HasOne("QMnemonic.Domain.Entities.Quiz", null)
                         .WithMany("Questions")
                         .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Answer");
-
-                    b.Navigation("Quiz");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Quiz", b =>
                 {
-                    b.HasOne("QMnemonic.Domain.Entities.Course", "Course")
+                    b.HasOne("QMnemonic.Domain.Entities.Course", null)
                         .WithMany("Quizzes")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Reading", b =>
@@ -637,19 +628,9 @@ namespace QMnemonic.Infrastructure.Migrations
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Text", b =>
                 {
-                    b.HasOne("QMnemonic.Domain.Entities.Reading", "Reading")
+                    b.HasOne("QMnemonic.Domain.Entities.Reading", null)
                         .WithMany("Texts")
-                        .HasForeignKey("ReadingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reading");
-                });
-
-            modelBuilder.Entity("QMnemonic.Domain.Entities.Answer", b =>
-                {
-                    b.Navigation("Question")
-                        .IsRequired();
+                        .HasForeignKey("ReadingId");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Course", b =>

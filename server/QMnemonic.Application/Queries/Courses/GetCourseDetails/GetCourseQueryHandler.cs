@@ -21,6 +21,9 @@ public class GetCourseQueryHandler : IRequestHandler<GetCourseQuery, Course>
     public async Task<Course> Handle(GetCourseQuery request, CancellationToken cancellationToken)
         {
             var course = await _courseRepository.GetByIdAsync(request.Id);
+
+
+            
             return course;
         }
 
