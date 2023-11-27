@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace QMnemonic.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/courses")]
     public class CourseController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -51,9 +51,24 @@ namespace QMnemonic.Api.Controllers
         }
 
 
+        [HttpPost]
+        [Route("createreading")]
+        public async Task<IActionResult> CreateReading([FromBody] AddReadingToCourseCommand command)
+        {
+            if (command == null)
+            {
+                return BadRequest();
+            }
+
+            await _mediator.Send(command);
+
+            return Ok();
+        }
 
 
-        [HttpGet("Courses/{langCode}")]
+
+
+        [HttpGet("language/{langCode}")]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses(string langCode)
         {
 
@@ -84,19 +99,5 @@ namespace QMnemonic.Api.Controllers
         }
 
 
-        [HttpGet("{courseId}/{order}")]
-        public async Task<ActionResult<Quiz>> GetQuiz(int courseId, int order)
-        {
-            // Tutaj możesz użyć odpowiedniego mechanizmu do pobrania quizu dla danego kursu i quizu
-            var query = new GetQuizQuery { CourseId = courseId, QuizOrder = order };
-            var result = await _mediator.Send(query);
-
-            if (result == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(result);
-        }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using QMnemonic.Domain.Entities;
 using QMnemonic.Domain.Repositories;
 using QMnemonic.Infrastructure.Data;
@@ -39,9 +40,11 @@ namespace QMnemonic.Infrastructure.Repositories
             return await _context.Languages.FindAsync(Id);
         }
 
+
         public Task UpdateAsync(Language value)
         {
             throw new NotImplementedException();
         }
+
     }
 }

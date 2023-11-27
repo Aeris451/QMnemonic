@@ -34,9 +34,6 @@ namespace QMnemonic.Application.Commands.Courses
 
             course.Quizzes.Add(newQuiz);
 
-            foreach(var item in course.Quizzes){
-                Console.WriteLine(item.Name);
-            }
 
             await _courseRepository.UpdateAsync(course);
 

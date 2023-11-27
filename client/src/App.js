@@ -7,8 +7,9 @@ import Home from "./components/pages/home";
 import Quiz from "./components/pages/FlashCardQuiz";
 import CreateCourse from "./components/pages/CreateCourse";
 import CoursesList from "./components/pages/CoursesList";
-import CourseDetails from './components/pages/CourseDetails';
-
+import CourseForm from './components/pages/CourseForm';
+import QuizForm from './components/pages/QuizForm';
+import ReadingForm from './components/pages/ReadingForm';
 
 function App() {
   return (
@@ -20,8 +21,10 @@ function App() {
         <Route path="/about" element={<About />}/>
         <Route path="/quiz" element={<Quiz />}/>
         <Route path="/createcourse" element={<CreateCourse />}/>
-        <Route path="/course/:id" element={<CourseDetails />} />
         <Route path="/courses" element={<CoursesList />}/>
+        <Route path="/course" element={<CourseForm />}/>
+        <Route path="/quiz" element={<QuizForm />}/>
+        <Route path="/reading" element={<ReadingForm />}/>
         <Route path="/" element={<Home />}/>
       </Routes>
 

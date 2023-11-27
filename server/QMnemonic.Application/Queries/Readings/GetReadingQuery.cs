@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using MediatR;
 using QMnemonic.Domain.Entities;
 
-namespace QMnemonic.Application.Queries.Quizzes
+namespace QMnemonic.Application.Queries.Readings
 {
-    public class GetQuizQuery: IRequest<Quiz>
+    public class GetReadingQuery: IRequest<Reading>
     {
-        public int QuizId {get; set;}
+        public int ReadingId {get; set;}
     }
 }

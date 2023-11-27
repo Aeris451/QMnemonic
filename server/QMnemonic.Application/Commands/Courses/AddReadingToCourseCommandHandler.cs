@@ -30,7 +30,7 @@ namespace QMnemonic.Application.Commands.Courses
                 CourseId = request.CourseId
             };
 
-            course.Reading = newReading;
+            course.Readings.Add(newReading);
 
             await _courseRepository.UpdateAsync(course);
 

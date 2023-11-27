@@ -1,45 +1,40 @@
-// QuizForm.js
 import React, { useState } from 'react';
+import axios from 'axios';
 
-const QuizForm = ({ courseId, onQuizAdded }) => {
-  const [quizData, setQuizData] = useState({
-    // Definiuj pola formularza, np. question, answer, itp.
-  });
+const QuizForm = () => {
+  const [quizTitle, setQuizTitle] = useState('');
+  const [courseId, setCourseId] = useState('');
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setQuizData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleCreateQuiz = async () => {
     try {
-      const response = await fetch(`/api/course/${courseId}/quiz`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(quizData),
+      const response = await axios.post('api/courses/createquiz', {
+        title: quizTitle,
+        courseId: parseInt(courseId, 10),
       });
 
-      if (response.ok) {
-        // Wywołaj funkcję, aby zaktualizować stan quizów w komponencie nadrzędnym
-        onQuizAdded();
-        // Możesz również wyczyścić formularz lub przejść do innej strony, itp.
-      } else {
-        console.error('Failed to add quiz');
-      }
+      console.log('Quiz created:', response.data);
     } catch (error) {
-      console.error('Error adding quiz:', error);
+      console.error('Error creating quiz:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* Dodaj pola formularza */}
-      <button type="submit">Add Quiz</button>
-    </form>
+    <div>
+      <h2>Create Quiz</h2>
+      <input
+        type="text"
+        placeholder="Quiz Title"
+        value={quizTitle}
+        onChange={(e) => setQuizTitle(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Course ID"
+        value={courseId}
+        onChange={(e) => setCourseId(e.target.value)}
+      />
+      <button onClick={handleCreateQuiz}>Create Quiz</button>
+    </div>
   );
 };
 

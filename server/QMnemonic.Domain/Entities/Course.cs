@@ -15,7 +15,7 @@ namespace QMnemonic.Domain.Entities
     {
         public int Id {get; set;}
         public List<Quiz> Quizzes {get; set;} = new List<Quiz>();
-        public Reading Reading {get; set;}
+        public List<Reading> Readings {get; set;} = new List<Reading>();
         public Language Language {get; set;}
         public string Name {get; set;} 
         public string Description {get; set;} 

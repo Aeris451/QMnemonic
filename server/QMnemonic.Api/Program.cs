@@ -15,6 +15,8 @@ using QMnemonic.Application.Queries.Quizs;
 using QMnemonic.Application.Queries.Quizzes;
 using QMnemonic.Application.Mappings;
 using System.Text.Json.Serialization;
+using QMnemonic.Application.Commands.Readings;
+using QMnemonic.Application.Queries.Readings;
 
 
 
@@ -38,6 +40,7 @@ builder.Services.AddMediatR(cfg =>
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>(); 
 builder.Services.AddScoped<IQuizRepository, QuizRepository>(); 
+builder.Services.AddScoped<IReadingRepository, ReadingRepository>(); 
 
 //builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
@@ -45,6 +48,7 @@ builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 builder.Services.AddScoped<IRequestHandler<AddCourseCommand, int>, AddCourseCommandHandler>();
 builder.Services.AddScoped<IRequestHandler<AddQuizToCourseCommand, int>, AddQuizToCourseCommandHandler>();
 builder.Services.AddScoped<IRequestHandler<AddReadingToCourseCommand>, AddReadingToCourseCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AddTextToReadingCommand>, AddTextToReadingCommandHandler>();
 builder.Services.AddScoped<IRequestHandler<AddQuestionToQuizCommand>, AddQuestionToQuizCommandHandler>();
 //builder.Services.AddScoped<IRequestHandler<AddAnswersToQuizCommand>, AddAnswersToQuizCommandHandler>();
 
@@ -53,6 +57,7 @@ builder.Services.AddScoped<IRequestHandler<AddQuestionToQuizCommand>, AddQuestio
 builder.Services.AddScoped<IRequestHandler<GetCoursesListQuery, List<CourseListDTO>>, GetCoursesListQueryHandler>();
 builder.Services.AddScoped<IRequestHandler<GetCourseQuery, Course>, GetCourseQueryHandler>();
 builder.Services.AddScoped<IRequestHandler<GetQuizQuery, Quiz>, GetQuizQueryHandler>();
+builder.Services.AddScoped<IRequestHandler<GetReadingQuery, Reading>, GetReadingQueryHandler>();
 //builder.Services.AddScoped<IRequestHandler<GetLanguageQuery, Language>, GetLanguageQueryHandler>();
 
 

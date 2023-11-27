@@ -8,7 +8,7 @@ namespace QMnemonic.Application.Commands.Readings
 {
     public class AddTextToReadingCommand : IRequest
     {
-        public int CourseId {get; set;}
+        public int ReadingId {get; set;}
         public string Content {get; set;}
     }
 }

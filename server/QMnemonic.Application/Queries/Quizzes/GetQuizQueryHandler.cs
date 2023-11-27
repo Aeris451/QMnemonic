@@ -11,18 +11,17 @@ namespace QMnemonic.Application.Queries.Quizs;
 
 public class GetQuizQueryHandler : IRequestHandler<GetQuizQuery, Quiz>
 {
-    private readonly ICourseRepository _courseRepository;
+    private readonly IQuizRepository _quizRepository;
 
-    public GetQuizQueryHandler(ICourseRepository courseRepository)
+    public GetQuizQueryHandler(IQuizRepository quizRepository)
     {
-        _courseRepository = courseRepository;
+        _quizRepository = quizRepository;
     }
 
 
     public async Task<Quiz> Handle(GetQuizQuery request, CancellationToken cancellationToken)
     {
-        var course = await _courseRepository.GetByIdAsync(request.CourseId);
-        var quiz = course.Quizzes.Skip(request.QuizOrder - 1).FirstOrDefault();
+        var quiz = await _quizRepository.GetByIdAsync(request.QuizId);
 
 
 

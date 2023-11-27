@@ -38,7 +38,7 @@ namespace QMnemonic.Infrastructure.Repositories
         {
             return await _context.Courses
             .Include(c => c.Quizzes)
-            .Include(c => c.Reading)
+            .Include(c => c.Readings)
             .Include(c => c.Language)
             .FirstOrDefaultAsync(c => c.Id == Id);
         }

@@ -12,7 +12,7 @@ using QMnemonic.Infrastructure.Data;
 namespace QMnemonic.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231126225537_Initial")]
+    [Migration("20231127143347_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -304,7 +304,7 @@ namespace QMnemonic.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("QuizId")
+                    b.Property<int?>("QuizId")
                         .HasColumnType("int");
 
                     b.Property<string>("SContent")
@@ -367,8 +367,7 @@ namespace QMnemonic.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId")
-                        .IsUnique();
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Readings");
                 });
@@ -602,9 +601,7 @@ namespace QMnemonic.Infrastructure.Migrations
 
                     b.HasOne("QMnemonic.Domain.Entities.Quiz", null)
                         .WithMany("Questions")
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("QuizId");
 
                     b.Navigation("Answer");
                 });
@@ -621,8 +618,8 @@ namespace QMnemonic.Infrastructure.Migrations
             modelBuilder.Entity("QMnemonic.Domain.Entities.Reading", b =>
                 {
                     b.HasOne("QMnemonic.Domain.Entities.Course", "Course")
-                        .WithOne("Reading")
-                        .HasForeignKey("QMnemonic.Domain.Entities.Reading", "CourseId")
+                        .WithMany("Readings")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -640,8 +637,7 @@ namespace QMnemonic.Infrastructure.Migrations
                 {
                     b.Navigation("Quizzes");
 
-                    b.Navigation("Reading")
-                        .IsRequired();
+                    b.Navigation("Readings");
                 });
 
             modelBuilder.Entity("QMnemonic.Domain.Entities.Group", b =>

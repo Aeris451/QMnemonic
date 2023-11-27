@@ -11,27 +11,28 @@ namespace QMnemonic.Application.Commands.Readings
 {
     public class AddTextToReadingCommandHandler : IRequestHandler<AddTextToReadingCommand>
     {
-    private readonly ICourseRepository _courseRepository;
+    private readonly IReadingRepository _readingRepository;
 
-    public AddTextToReadingCommandHandler(ICourseRepository courseRepository)
+    public AddTextToReadingCommandHandler(IReadingRepository readingRepository)
     {
-        _courseRepository = courseRepository;
+        _readingRepository = readingRepository;
     }
 
         public async Task Handle(AddTextToReadingCommand request, CancellationToken cancellationToken)
         {
-            var course = await _courseRepository.GetByIdAsync(request.CourseId);
+            var reading = await _readingRepository.GetByIdAsync(request.ReadingId);
 
 
 
             var newText = new Text
             {
-                OrgContent = request.Content
+                OrgContent = request.Content,
+                ConvContent = String.Empty
             };
 
-            course.Reading.Texts.Add(newText);
+            reading.Texts.Add(newText);
 
-            await _courseRepository.UpdateAsync(course);
+            await _readingRepository.UpdateAsync(reading);
 
         }
     }

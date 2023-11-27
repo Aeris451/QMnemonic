@@ -10,46 +10,40 @@ using QMnemonic.Infrastructure.Data;
 
 namespace QMnemonic.Infrastructure.Repositories
 {
-    public class QuizRepository : IQuizRepository
+    public class ReadingRepository : IReadingRepository
     {
 
         private readonly ApplicationDbContext _context;
 
-        public QuizRepository(ApplicationDbContext context)
+        public ReadingRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task AddAsync(Quiz value)
-        {
-            await _context.Quizzes.AddAsync(value);
-            await _context.SaveChangesAsync();
-        }
-
-        public Task DeleteAsync(Quiz value)
+        public Task AddAsync(Reading value)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Quiz>> GetAllAsync()
+        public Task DeleteAsync(Reading value)
         {
             throw new NotImplementedException();
         }
 
-
-
-        public async Task<Quiz> GetByIdAsync(int Id)
+        public Task<IEnumerable<Reading>> GetAllAsync()
         {
-            return await _context.Quizzes
-            .Include(q => q.Answers)
-            .Include(q => q.Questions)
-                        .ThenInclude(question => question.Answer) 
-            .FirstOrDefaultAsync(q => q.Id == Id);
+            throw new NotImplementedException();
         }
 
-        public async Task UpdateAsync(Quiz value)
+        public async Task<Reading> GetByIdAsync(int Id)
         {
+            return await _context.Readings
+            .Include(r => r.Texts)
+            .FirstOrDefaultAsync(r => r.Id == Id);
+        }
 
+        public async Task UpdateAsync(Reading value)
+        {
             _context.Entry(value).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }

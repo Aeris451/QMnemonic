@@ -29,7 +29,7 @@ namespace QMnemonic.Application.Commands.Quizzes
                 Content = request.Content,
                 SContent = request.SContent,
                 Annotations = request.Annotations,
-                Answer = new Answer 
+                Answer = new Answer
                 {
                     Content = request.AnswerContent
                 }

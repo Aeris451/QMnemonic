@@ -6,8 +6,8 @@ using QMnemonic.Domain.Entities;
 
 namespace QMnemonic.Domain.Repositories
 {
-    public interface ILanguageRepository : IAsyncRepository<Language>
+    public interface IReadingRepository : IAsyncRepository<Reading>
     {
-
+        
     }
 }

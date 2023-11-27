@@ -341,10 +341,10 @@ namespace QMnemonic.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AnswerId = table.Column<int>(type: "int", nullable: false),
-                    QuizId = table.Column<int>(type: "int", nullable: false),
                     SContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Annotations = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Annotations = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    QuizId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -359,8 +359,7 @@ namespace QMnemonic.Infrastructure.Migrations
                         name: "FK_Questions_Quizzes_QuizId",
                         column: x => x.QuizId,
                         principalTable: "Quizzes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -435,8 +434,7 @@ namespace QMnemonic.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Readings_CourseId",
                 table: "Readings",
-                column: "CourseId",
-                unique: true);
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Texts_ReadingId",
