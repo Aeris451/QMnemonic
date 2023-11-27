@@ -17,9 +17,7 @@ using QMnemonic.Application.Mappings;
 using System.Text.Json.Serialization;
 using QMnemonic.Application.Commands.Readings;
 using QMnemonic.Application.Queries.Readings;
-
-
-
+using QMnemonic.Infrastructure.BardApi;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +39,7 @@ builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>(); 
 builder.Services.AddScoped<IQuizRepository, QuizRepository>(); 
 builder.Services.AddScoped<IReadingRepository, ReadingRepository>(); 
+builder.Services.AddScoped<IBardApiRepository, BardApi>(); 
 
 //builder.Services.AddScoped<IIdentityRepository, IdentityRepository>();
 
@@ -49,6 +48,7 @@ builder.Services.AddScoped<IRequestHandler<AddCourseCommand, int>, AddCourseComm
 builder.Services.AddScoped<IRequestHandler<AddQuizToCourseCommand, int>, AddQuizToCourseCommandHandler>();
 builder.Services.AddScoped<IRequestHandler<AddReadingToCourseCommand>, AddReadingToCourseCommandHandler>();
 builder.Services.AddScoped<IRequestHandler<AddTextToReadingCommand>, AddTextToReadingCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AddGeneratedTextToReadingCommand>, AddGeneratedTextToReadingCommandHandler>();
 builder.Services.AddScoped<IRequestHandler<AddQuestionToQuizCommand>, AddQuestionToQuizCommandHandler>();
 //builder.Services.AddScoped<IRequestHandler<AddAnswersToQuizCommand>, AddAnswersToQuizCommandHandler>();
 

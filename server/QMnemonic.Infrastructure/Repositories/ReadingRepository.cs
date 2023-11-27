@@ -42,6 +42,24 @@ namespace QMnemonic.Infrastructure.Repositories
             .FirstOrDefaultAsync(r => r.Id == Id);
         }
 
+        public async Task<List<string>> GetQuestionContents(List<int> QuizIds)
+        {
+            List<string> questionContent = new List<string>();
+
+            var quizzes = await _context.Quizzes
+                .Where(q => QuizIds.Contains(q.Id))
+                .Include(q => q.Questions)
+                .ToListAsync();
+
+            foreach (var quiz in quizzes)
+            {
+                questionContent.AddRange(quiz.Questions.Select(q => q.Content));
+            }
+
+            return questionContent;
+        }
+
+
         public async Task UpdateAsync(Reading value)
         {
             _context.Entry(value).State = EntityState.Modified;

@@ -8,6 +8,7 @@ using QMnemonic.Application.Commands.Quizzes;
 using QMnemonic.Application.Commands.Readings;
 using QMnemonic.Application.Queries.Readings;
 using QMnemonic.Domain.Entities;
+using QMnemonic.Infrastructure.BardApi;
 
 namespace QMnemonic.Api.Controllers
 {
@@ -55,6 +56,27 @@ namespace QMnemonic.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("api/Generator")]
+        public async Task<IActionResult> GenerateText([FromBody] AddGeneratedTextToReadingCommand command)
+        {
+            if (command == null)
+            {
+                return BadRequest();
+            }
+
+           
+
+            await _mediator.Send(command);
+
+
+
+            return Ok();
+        }
+
+
+        
 
 
 
