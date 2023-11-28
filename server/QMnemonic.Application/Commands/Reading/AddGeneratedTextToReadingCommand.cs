@@ -10,5 +10,7 @@ namespace QMnemonic.Application.Commands.Readings
     {
         public List<int> QuizIds {get; set;}
         public int ReadingId {get; set;}
+        public string Key {get; set;}
+        public string Prompt {get; set;}
     }
 }

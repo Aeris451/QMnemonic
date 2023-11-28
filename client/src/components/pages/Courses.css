@@ -1,0 +1,24 @@
+.course-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 250px;
+  }
+  
+  .course-card:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .course-card.selected {
+    background-color: #d3e0ea;
+  }
+  
+  ul.courses {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }

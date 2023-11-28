@@ -4,7 +4,7 @@ using MediatR;
 
 namespace QMnemonic.Application.Queries.Courses
 {
-    public class GetCourseQuery : IRequest<Course>
+    public class GetCourseQuery : IRequest<CourseDetailsDTO>
     {
         public int Id {get; set;}
     }

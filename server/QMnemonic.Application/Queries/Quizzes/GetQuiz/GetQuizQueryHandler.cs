@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 
 
-namespace QMnemonic.Application.Queries.Quizs;
+namespace QMnemonic.Application.Queries.Quizzes;
 
 
 public class GetQuizQueryHandler : IRequestHandler<GetQuizQuery, Quiz>

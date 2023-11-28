@@ -18,8 +18,8 @@ namespace QMnemonic.Domain.Entities
         public int Id {get; set;}
         public int CourseId {get; set;}
         public string Name {get; set;}
+        public string Description {get; set;}
         public Course Course {get; set;}
-        //public List<string> GeneratorBase {get; set;}
         public List<Text> Texts {get; set;} = new List<Text>();
 
     }

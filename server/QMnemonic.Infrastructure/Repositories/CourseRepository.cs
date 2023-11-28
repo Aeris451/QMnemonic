@@ -38,7 +38,9 @@ namespace QMnemonic.Infrastructure.Repositories
         {
             return await _context.Courses
             .Include(c => c.Quizzes)
+                .ThenInclude(c => c.Questions)
             .Include(c => c.Readings)
+                .ThenInclude(c => c.Texts)
             .Include(c => c.Language)
             .FirstOrDefaultAsync(c => c.Id == Id);
         }
@@ -53,6 +55,7 @@ namespace QMnemonic.Infrastructure.Repositories
         public async Task<IEnumerable<Course>> GetByLanguageAsync(string code)
         {
             return await _context.Courses
+            .Include(c => c.Language)
             .Where(course => course.Language.LanguageCode == code)
             .ToListAsync();
         }

@@ -12,7 +12,7 @@ using QMnemonic.Infrastructure.Data;
 namespace QMnemonic.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231127143347_Initial")]
+    [Migration("20231128221022_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -360,6 +360,10 @@ namespace QMnemonic.Infrastructure.Migrations
 
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()

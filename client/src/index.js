@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'; // Zaimportuj Bootstrap CSS
 import App from './App'; // Zaimportuj główny komponent aplikacji
 import { BrowserRouter } from 'react-router-dom';
 
+
+
 ReactDOM.render(
   <React.StrictMode>
       <BrowserRouter>

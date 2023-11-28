@@ -31,14 +31,11 @@ namespace QMnemonic.Application.Commands.Readings
             string toGen = string.Join("; ", contents);
 
 
-
-            var content = await _bardApiRepository.Generator(toGen);
-
             
 
             var newText = new Text
             {
-                OrgContent = content,
+                OrgContent = await _bardApiRepository.Generator(request.Prompt, toGen, request.Key),
                 ConvContent = String.Empty
             };
 

@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using QMnemonic.Application.Commands.Courses;
 using QMnemonic.Application.Queries.Courses;
+using QMnemonic.Application.Queries.Languages;
 using QMnemonic.Application.Queries.Quizzes;
 using QMnemonic.Domain.Entities;
 using System.Threading.Tasks;
@@ -69,7 +70,7 @@ namespace QMnemonic.Api.Controllers
 
 
         [HttpGet("language/{langCode}")]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses(string langCode)
+        public async Task<ActionResult<IEnumerable<CourseListDTO>>> GetCourses(string langCode)
         {
 
             var query = new GetCoursesListQuery { LangageCode = langCode };
@@ -85,10 +86,29 @@ namespace QMnemonic.Api.Controllers
 
 
         [HttpGet("{courseId}")]
-        public async Task<ActionResult<Course>> GetCourse(int courseId)
+        public async Task<ActionResult<CourseDetailsDTO>> GetCourse(int courseId)
         {
-            var command = new GetCourseQuery { Id = courseId };
-            var result = await _mediator.Send(command);
+            var query = new GetCourseQuery { Id = courseId };
+
+            var result = await _mediator.Send(query);
+
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
+
+
+        [HttpGet("language")]
+        public async Task<ActionResult<List<Language>>> GetLanguages()
+        {
+
+            var query = new GetLanguagesQuery { };
+            var result = await _mediator.Send(query);
 
             if (result == null)
             {

@@ -30,9 +30,9 @@ namespace QMnemonic.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Language>> GetAllAsync()
+        public async Task<IEnumerable<Language>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Languages.ToListAsync();
         }
 
         public async Task<Language> GetByIdAsync(int Id)

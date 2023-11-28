@@ -11,12 +11,12 @@ using QMnemonic.Domain.Repositories;
 using QMnemonic.Domain.Entities;
 using QMnemonic.Application.Queries.Languages;
 using QMnemonic.Application.Commands.Quizzes;
-using QMnemonic.Application.Queries.Quizs;
 using QMnemonic.Application.Queries.Quizzes;
 using QMnemonic.Application.Mappings;
 using System.Text.Json.Serialization;
 using QMnemonic.Application.Commands.Readings;
 using QMnemonic.Application.Queries.Readings;
+using QMnemonic.Application.Queries.Languages;
 using QMnemonic.Infrastructure.BardApi;
 
 
@@ -29,7 +29,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
-
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowReactApp",
+            builder => builder.WithOrigins("http://localhost:3000")
+                              .AllowAnyMethod()
+                              .AllowAnyHeader());
+    });
 
 
 builder.Services.AddMediatR(cfg => 
@@ -55,9 +61,10 @@ builder.Services.AddScoped<IRequestHandler<AddQuestionToQuizCommand>, AddQuestio
 
 
 builder.Services.AddScoped<IRequestHandler<GetCoursesListQuery, List<CourseListDTO>>, GetCoursesListQueryHandler>();
-builder.Services.AddScoped<IRequestHandler<GetCourseQuery, Course>, GetCourseQueryHandler>();
+builder.Services.AddScoped<IRequestHandler<GetCourseQuery, CourseDetailsDTO>, GetCourseQueryHandler>();
 builder.Services.AddScoped<IRequestHandler<GetQuizQuery, Quiz>, GetQuizQueryHandler>();
 builder.Services.AddScoped<IRequestHandler<GetReadingQuery, Reading>, GetReadingQueryHandler>();
+builder.Services.AddScoped<IRequestHandler<GetLanguagesQuery, List<Language>>, GetLanguagesQueryHandler>();
 //builder.Services.AddScoped<IRequestHandler<GetLanguageQuery, Language>, GetLanguageQueryHandler>();
 
 
