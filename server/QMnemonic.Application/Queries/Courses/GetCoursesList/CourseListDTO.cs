@@ -13,5 +13,6 @@ namespace QMnemonic.Application.Queries.Courses
         public string Name {get; set;}
         public string ShortDescription {get; set;} 
         public string AuthorId {get; set;}
+        public string imageUrl {get; set;} = "https://static.memrise.com/img/400sqf/from/uploads/immersion/shutterstock_686826304.jpg.jpg";
     }
 }

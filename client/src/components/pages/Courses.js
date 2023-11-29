@@ -1,39 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
+import './Courses.css';
 
 const CourseCard = styled.div`
-  border: 1px solid #ccc;
+
   padding: 10px;
   margin: 10px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: background-color 0.3s;
+  font-size: 14px;
+  color: #333;
 
   &:hover {
-    background-color: #f0f0f0;
+    background: rgb(220, 166, 17);
   }
 
   &.selected {
-    background-color: #d3e0ea;
+    background: rgb(220, 166, 17);
   }
-  width: 250px;
 `;
 
 const LanguageList = styled.ul`
   list-style-type: none;
   padding: 0;
-  width: 200px;
+  margin: 0 20px 0;
+
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
 `;
 
 const LanguageItem = styled.li`
   cursor: pointer;
-  padding: 10px;
+  padding: 15px;
   border-bottom: 1px solid #ccc;
+  border-radius: 10px;
 
   &:hover {
-    background-color: #f0f0f0;
+    background: rgb(220, 166, 17);
   }
 `;
 
@@ -55,7 +62,6 @@ const Courses = () => {
       .then((response) => response.json())
       .then((data) => setLanguages(data.$values)); // Use data.$values here
   }, []);
-  
 
   const handleCardClick = (courseId) => {
     setSelectedCourseId(courseId);
@@ -68,13 +74,16 @@ const Courses = () => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <LanguageList>
-        {languages.map((language) => (
-          <LanguageItem key={language.languageCode} onClick={() => handleLanguageClick(language.languageCode)}>
-            {language.languageName}
-          </LanguageItem>
-        ))}
-      </LanguageList>
+      <div style={{ margin: '0 10px' }}>
+        <h2>Select<br /> Language</h2>
+        <LanguageList>
+          {languages.map((language) => (
+            <LanguageItem key={language.languageCode} onClick={() => handleLanguageClick(language.languageCode)}>
+              {language.languageName}
+            </LanguageItem>
+          ))}
+        </LanguageList>
+      </div>
       <div>
         {coursesData.$values && (
           <ul
@@ -89,6 +98,7 @@ const Courses = () => {
                 className={selectedCourseId === course.courseId ? 'selected' : ''}
                 onClick={() => handleCardClick(course.courseId)}
               >
+                <img src={course.imageUrl} alt={course.name} style={{ width: '220px', height: '150px', objectFit: 'cover', borderRadius: '10px' }} />
                 <h3>{course.name}</h3>
                 <p>{course.shortDescription}</p>
               </CourseCard>
