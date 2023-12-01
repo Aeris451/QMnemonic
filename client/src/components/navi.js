@@ -16,6 +16,7 @@ function Navi() {
             <Nav.Link href="/about">About</Nav.Link>
             <Nav.Link href="/courses/en">Courses</Nav.Link>
             <Nav.Link href="/createcourse">Create course</Nav.Link>
+            <Nav.Link href="/createcourse">Profile</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

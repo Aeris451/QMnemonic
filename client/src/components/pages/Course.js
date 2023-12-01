@@ -2,114 +2,84 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Card } from 'react-bootstrap';
 
-const CourseWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+
+const CourseContainer = styled.div`
+  width: 80%;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #f2f2f2;
+  border: 1px solid #ccc;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
-const Title = styled.h1`
-  font-size: 24px;
+const CourseDescription = styled.div`
+
+font-size: 22px;
+margin-bottom: 100px;
+
+
+`;
+
+const CourseTitle = styled.h1`
+  font-size: 44px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #333;
 `;
 
-const Description = styled.p`
-  font-size: 16px;
-  line-height: 1.5;
-  margin-bottom: 20px;
-  color: #333;
+const QuizList = styled.ul`
+  list-style: none;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  flex-wrap: wrap;
+
 `;
 
-const BoxContainer = styled.div`
-  width: 400px;
-  margin-bottom: 20px;
-  background-color: #fff;
-
-  padding: 20px;
-  border-radius: 10px;
-  color: #333;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const Box = styled.div`
-  cursor: pointer;
+const QuizItem = styled(Card)`
+  width: 100px;
+  height: 110px;
+  margin-bottom: 10px;
   padding: 10px;
-  border-bottom: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+  background-color: #f0f0f0;
 
   &:hover {
     background: rgb(220, 166, 17);
+    
   }
 `;
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const QuizTitle = styled.h3`
+  font-size: 18px;
+  margin-bottom: 5px;
 `;
 
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: none;
-  outline: none;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s;
+const ReadingList = styled(QuizList)``;
 
-  &:focus {
-    background-color: #e6e6e6;
-  }
-`;
+const ReadingItem = styled(QuizItem)``;
 
-const Button = styled.button`
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  border-radius: 10px;
+const AddButton = styled.button`
   background-color: #007bff;
   color: #fff;
-  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #0056b3;
-  }
+  margin: 30px;
 `;
 
 const Course = () => {
   const { id } = useParams();
   const [courseData, setCourseData] = useState(null);
   const navigate = useNavigate();
-
-  const [newQuiz, setNewQuiz] = useState({ name: '', description: '', courseId: id });
-  const [newReading, setNewReading] = useState({ name: '', description: '', courseId: id });
-
-  const handleNewQuiz = async (e) => {
-    e.preventDefault();
-    const result = await axios.post('/api/courses/createquiz', newQuiz);
-    if (result.status === 200) {
-      navigate(`/course/${id}/quiz/${result.data.quizId}`);
-    }
-  };
-
-  const handleNewReading = async (e) => {
-    e.preventDefault();
-    const result = await axios.post('/api/courses/createreading', newReading);
-    if (result.status === 200) {
-      navigate(`/course/${id}/reading/${result.data.readingId}`);
-    }
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -124,61 +94,41 @@ const Course = () => {
     return <div>Loading...</div>;
   }
 
+  const quizzes = courseData.quizzes.$values;
+  const readings = courseData.readings.$values;
+
   return (
-    <CourseWrapper>
-      <Title>{courseData.name}</Title>
-      <Description>{courseData.description}</Description>
 
-      <BoxContainer>
-        <h2>Create a New Quiz</h2>
-        <Form onSubmit={handleNewQuiz}>
-          <Input
-            type="text"
-            value={newQuiz.name}
-            onChange={(e) => setNewQuiz({ ...newQuiz, name: e.target.value })}
-          />
-          <Input
-            type="text"
-            value={newQuiz.description}
-            onChange={(e) => setNewQuiz({ ...newQuiz, description: e.target.value })}
-          />
-          <Button type="submit">Create Quiz</Button>
-        </Form>
+    <CourseContainer>
+      <CourseTitle>{courseData.name}</CourseTitle>
+      <CourseDescription>{courseData.description}</CourseDescription>
 
-        <h2>Quizzes</h2>
-        {courseData.quizzes.$values.map((quiz, index) => (
-          <Box key={index} onClick={() => navigate(`quiz/${quiz.quizId}`)}>
-            <h3>{quiz.name}</h3>
-            <p>{quiz.description}</p>
-          </Box>
+      <h2>Quizzes</h2>
+      <AddButton onClick={() => navigate(`/courses/${id}/quizzes/add`)}>
+        Add quiz
+      </AddButton>
+      <QuizList>
+        {quizzes.map((quiz) => (
+          <QuizItem key={quiz.id} onClick={() => navigate(`/courses/${id}/quizzes/${quiz.id}`)}>
+            <QuizTitle>{quiz.name}</QuizTitle>
+            <a>{quiz.description}</a>
+          </QuizItem>
         ))}
-      </BoxContainer>
-
-      <BoxContainer>
-        <h2>Create a New Reading</h2>
-        <Form onSubmit={handleNewReading}>
-          <Input
-            type="text"
-            value={newReading.name}
-            onChange={(e) => setNewReading({ ...newReading, name: e.target.value })}
-          />
-          <Input
-            type="text"
-            value={newReading.description}
-            onChange={(e) => setNewReading({ ...newReading, description: e.target.value })}
-          />
-          <Button type="submit">Create Reading</Button>
-        </Form>
-
-        <h2>Readings</h2>
-        {courseData.readings.$values.map((reading, index) => (
-          <Box key={index} onClick={() => navigate(`reading/${reading.readingId}`)}>
-            <h3>{reading.name}</h3>
-            <p>{reading.description}</p>
-          </Box>
+      </QuizList>
+      <h2>Readings</h2>
+      <AddButton onClick={() => navigate(`/courses/${id}/readings/add`)}>
+        Add reading
+      </AddButton>
+      <ReadingList>
+        {readings.map((reading) => (
+          <ReadingItem key={reading.id} onClick={() => navigate(`/courses/${id}/readings/${reading.id}`)}>
+            <QuizTitle>{reading.name}</QuizTitle>
+          </ReadingItem>
         ))}
-      </BoxContainer>
-    </CourseWrapper>
+      </ReadingList>
+      <div>
+      </div>
+    </CourseContainer>
   );
 };
 
