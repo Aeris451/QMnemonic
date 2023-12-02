@@ -1,0 +1,85 @@
+
+
+
+.course-info{
+  padding: 20px;
+  background-color: rgb(33, 37, 41);
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+
+.course-container {
+    margin: 0 auto;
+    
+  }
+
+  
+
+  
+  .course-title {
+    font-size: 44px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  
+
+
+  .course-description {
+    font-size: 22px;
+
+  }
+  
+
+
+  .add-button {
+    background-color: rgb(33, 37, 41);
+    font-size: px;
+    font-weight: bold;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin: 30px;
+  }
+  
+  .quiz-card {
+
+    height: 110px;
+    margin-bottom: 10px;
+
+    border-radius: 15px;
+
+    cursor: pointer;
+
+    box-shadow: 10px 5px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+  }
+
+
+  .reading-card {
+
+    height: 110px;
+    margin-bottom: 10px;
+
+    border-radius: 15px;
+
+    cursor: pointer;
+
+    box-shadow: 10px 5px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .quiz-card:hover {
+    transform: scale(1.15);
+
+  }
+
+
+  .reading-card:hover {
+    transform: scale(1.15);
+
+  }
+  

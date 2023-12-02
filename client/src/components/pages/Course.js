@@ -1,80 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card } from 'react-bootstrap';
-
-
-const CourseContainer = styled.div`
-  width: 80%;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-`;
-
-const CourseDescription = styled.div`
-
-font-size: 22px;
-margin-bottom: 100px;
-
-
-`;
-
-const CourseTitle = styled.h1`
-  font-size: 44px;
-  font-weight: bold;
-  margin-bottom: 20px;
-`;
-
-const QuizList = styled.ul`
-  list-style: none;
-  margin: 20px;
-  display: flex;
-  justify-content: center;
-  padding: 0;
-  flex-wrap: wrap;
-
-`;
-
-const QuizItem = styled(Card)`
-  width: 100px;
-  height: 110px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-in-out;
-  background-color: #f0f0f0;
-
-  &:hover {
-    background: rgb(220, 166, 17);
-    
-  }
-`;
-
-const QuizTitle = styled.h3`
-  font-size: 18px;
-  margin-bottom: 5px;
-`;
-
-const ReadingList = styled(QuizList)``;
-
-const ReadingItem = styled(QuizItem)``;
-
-const AddButton = styled.button`
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 30px;
-`;
+import { Card, Container, Button, Row, Col } from 'react-bootstrap';
+import './Course.css'; // Import the CSS file
 
 const Course = () => {
   const { id } = useParams();
@@ -98,37 +26,45 @@ const Course = () => {
   const readings = courseData.readings.$values;
 
   return (
+    <Container className="course-container">
+      <Row className="justify-content-md-center">
+        <Col md="auto">
 
-    <CourseContainer>
-      <CourseTitle>{courseData.name}</CourseTitle>
-      <CourseDescription>{courseData.description}</CourseDescription>
+          <Container fluid className="course-info">
+          <h1 className="course-title">{courseData.name}</h1>
+          <p className="course-description">{courseData.description}</p>
+          </Container>
+          <h2>Quizzes
+          <Button className="add-button" onClick={() => navigate(`/courses/${id}/quizzes/add`)}>Add quiz</Button></h2>
+          <Row>
+            {quizzes.map((quiz) => (
+              <Col sm={4} md={3} lg={2} key={quiz.id} onClick={() => navigate(`/courses/${id}/quizzes/${quiz.id}`)}>
+                <Card className="quiz-card">
+                  <Card.Body>
+                    <Card.Title>{quiz.name}</Card.Title>
+                    <Card.Text>{quiz.description}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
 
-      <h2>Quizzes</h2>
-      <AddButton onClick={() => navigate(`/courses/${id}/quizzes/add`)}>
-        Add quiz
-      </AddButton>
-      <QuizList>
-        {quizzes.map((quiz) => (
-          <QuizItem key={quiz.id} onClick={() => navigate(`/courses/${id}/quizzes/${quiz.id}`)}>
-            <QuizTitle>{quiz.name}</QuizTitle>
-            <a>{quiz.description}</a>
-          </QuizItem>
-        ))}
-      </QuizList>
-      <h2>Readings</h2>
-      <AddButton onClick={() => navigate(`/courses/${id}/readings/add`)}>
-        Add reading
-      </AddButton>
-      <ReadingList>
-        {readings.map((reading) => (
-          <ReadingItem key={reading.id} onClick={() => navigate(`/courses/${id}/readings/${reading.id}`)}>
-            <QuizTitle>{reading.name}</QuizTitle>
-          </ReadingItem>
-        ))}
-      </ReadingList>
-      <div>
-      </div>
-    </CourseContainer>
+          <h2>Readings
+          <Button className="add-button" onClick={() => navigate(`/courses/${id}/readings/add`)}>Add reading</Button></h2>
+          <Row>
+            {readings.map((reading) => (
+              <Col sm={4} md={3} lg={2} key={reading.id} onClick={() => navigate(`/courses/${id}/readings/${reading.id}`)}>
+                <Card className="reading-card">
+                  <Card.Body>
+                    <Card.Title>{reading.name}</Card.Title>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

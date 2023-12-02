@@ -1,11 +1,11 @@
 .navbar {
-  border-radius: 20px;
+ 
 }
 
 .navbar-brand {
   font-style: italic;
   color: darkgoldenrod;
-  font-weight: 200;
+  font-weight: bold;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 

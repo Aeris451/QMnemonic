@@ -7,7 +7,7 @@ import Home from "./components/pages/home";
 import AddQuestionToQuiz from "./components/pages/AddQuestionToQuiz";
 import Courses from "./components/pages/Courses";
 import Course from "./components/pages/Course";
-import CourseForm from "./components/pages/CourseForm";
+import CourseCreate from './components/pages/CourseCreate.js';
 
 
 
@@ -23,7 +23,7 @@ function App() {
         <Route path="/addQuestion" element={<AddQuestionToQuiz />}/>
         <Route path="/courses/:langCode" element={<Courses />} />
         <Route path="/course/:id" element={<Course />} />
-        <Route path="/createcourse" element={<CourseForm />} />
+        <Route path="/createcourse" element={<CourseCreate />} />
         <Route path="/" element={<Home />}/>
       </Routes>
     </div>
