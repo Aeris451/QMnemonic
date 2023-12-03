@@ -69,11 +69,13 @@ namespace QMnemonic.Api.Controllers
 
 
 
-        [HttpGet("language/{langCode}")]
-        public async Task<ActionResult<IEnumerable<CourseListDTO>>> GetCourses(string langCode)
+
+
+
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<CourseListDTO>>> GetCourses(GetCoursesListQuery query)
         {
 
-            var query = new GetCoursesListQuery { LangageCode = langCode };
             var result = await _mediator.Send(query);
 
             if (result == null)

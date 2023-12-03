@@ -52,12 +52,18 @@ namespace QMnemonic.Infrastructure.Repositories
         }
 
 
-        public async Task<IEnumerable<Course>> GetByLanguageAsync(string code)
+        public async Task<IEnumerable<Course>> GetByLanguageAndPageAsync(string code, int page)
         {
-            return await _context.Courses
-            .Include(c => c.Language)
-            .Where(course => course.Language.LanguageCode == code)
-            .ToListAsync();
+            // Pobierz kursy z bazy danych
+            var courses = await _context.Courses
+                .Where(course => course.Language.LanguageCode == code)
+                .OrderByDescending(c => c.Id)
+                .Skip((page - 1) * 12)
+                .Take(12)
+                .ToListAsync();
+
+            // Zwracaj kursy począwszy od określonej strony
+            return courses;
         }
     }
 }

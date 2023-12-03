@@ -8,6 +8,6 @@ namespace QMnemonic.Domain.Repositories
 {
     public interface ICourseRepository : IAsyncRepository<Course>
     {
-        Task<IEnumerable<Course>> GetByLanguageAsync(string code);
+        Task<IEnumerable<Course>> GetByLanguageAndPageAsync(string code, int page);
     }
 }

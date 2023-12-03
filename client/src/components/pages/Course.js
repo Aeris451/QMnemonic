@@ -38,7 +38,7 @@ const Course = () => {
           <Button className="add-button" onClick={() => navigate(`/courses/${id}/quizzes/add`)}>Add quiz</Button></h2>
           <Row>
             {quizzes.map((quiz) => (
-              <Col sm={4} md={3} lg={2} key={quiz.id} onClick={() => navigate(`/courses/${id}/quizzes/${quiz.id}`)}>
+              <Col sm={4} md={3} lg={4} key={quiz.id} onClick={() => navigate(`/courses/${id}/quizzes/${quiz.id}`)}>
                 <Card className="quiz-card">
                   <Card.Body>
                     <Card.Title>{quiz.name}</Card.Title>
@@ -53,7 +53,7 @@ const Course = () => {
           <Button className="add-button" onClick={() => navigate(`/courses/${id}/readings/add`)}>Add reading</Button></h2>
           <Row>
             {readings.map((reading) => (
-              <Col sm={4} md={3} lg={2} key={reading.id} onClick={() => navigate(`/courses/${id}/readings/${reading.id}`)}>
+              <Col sm={4} md={3} lg={4} key={reading.id} onClick={() => navigate(`/courses/${id}/readings/${reading.id}`)}>
                 <Card className="reading-card">
                   <Card.Body>
                     <Card.Title>{reading.name}</Card.Title>

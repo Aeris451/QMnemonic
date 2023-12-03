@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Navi from './components/navi.js'; 
 import { Route, Routes } from 'react-router-dom';
@@ -8,6 +7,8 @@ import AddQuestionToQuiz from "./components/pages/AddQuestionToQuiz";
 import Courses from "./components/pages/Courses";
 import Course from "./components/pages/Course";
 import CourseCreate from './components/pages/CourseCreate.js';
+import QuizCreate from './components/pages/QuizCreate.js';
+import ReadingCreate from './components/pages/ReadingCreate.js';
 
 
 
@@ -24,6 +25,8 @@ function App() {
         <Route path="/courses/:langCode" element={<Courses />} />
         <Route path="/course/:id" element={<Course />} />
         <Route path="/createcourse" element={<CourseCreate />} />
+        <Route path="/courses/:courseId/quizzes/add" element={<QuizCreate />} />
+        <Route path="/courses/:courseId/readings/add" element={<ReadingCreate />} />
         <Route path="/" element={<Home />}/>
       </Routes>
     </div>

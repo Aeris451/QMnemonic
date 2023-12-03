@@ -1,25 +1,47 @@
 import React from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import './Courses.css'
+import './Courses.css';
 
 const Courses = () => {
-  const { langCode } = useParams(); // Extract the langCode from the URL
-  const [coursesData, setCoursesData] = React.useState({});
+  const { langCode } = useParams();
+  const [coursesData, setCoursesData] = React.useState([]);
   const [selectedCourseId, setSelectedCourseId] = React.useState(null);
   const navigate = useNavigate();
   const [languages, setLanguages] = React.useState([]);
+  const [page, setPage] = React.useState(1); 
+
+  const fetchCourses = async (page) => {
+    const response = await fetch(`/api/courses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ languageCode: langCode, page: page })
+    });
+    const data = await response.json();
+    setCoursesData(prevCourses => [...prevCourses, ...(data.$values || [])]); 
+  };
 
   React.useEffect(() => {
-    fetch(`/api/courses/language/${langCode}`) // Use the dynamic langCode
-      .then((response) => response.json())
-      .then((data) => setCoursesData(data));
-  }, [langCode]); // Add langCode to the dependency array
+    fetchCourses(page);
+  }, [langCode, page]); 
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        setPage(prevPage => prevPage + 1); 
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   React.useEffect(() => {
     fetch('/api/courses/language')
       .then((response) => response.json())
-      .then((data) => setLanguages(data.$values)); // Use data.$values here
+      .then((data) => setLanguages(data.$values || [])); 
   }, []);
 
   const handleCardClick = (courseId) => {
@@ -28,7 +50,11 @@ const Courses = () => {
   };
 
   const handleLanguageClick = (languageCode) => {
-    navigate(`/courses/${languageCode}`);
+    if (languageCode !== langCode) {
+      setCoursesData([]); 
+      setPage(1); 
+      navigate(`/courses/${languageCode}`);
+    }
   };
 
   return (
@@ -54,9 +80,9 @@ const Courses = () => {
         </Col>
         <Col md={9}>
           <Row>
-            {coursesData.$values && (
+            {coursesData && (
               <>
-                {coursesData.$values.map((course) => (
+                {coursesData.map((course) => (
                   <Col key={course.courseId} md={4}>
                     <Card
                       className={selectedCourseId === course.courseId ? 'selected' : ''}
@@ -72,6 +98,8 @@ const Courses = () => {
                 ))}
               </>
             )}
+          </Row>
+          <Row>
           </Row>
         </Col>
       </Row>

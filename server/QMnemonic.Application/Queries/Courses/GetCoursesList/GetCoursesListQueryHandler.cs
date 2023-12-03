@@ -26,7 +26,7 @@ namespace QMnemonic.Application.Queries.Courses
         {
 
 
-            var courses = await _courseRepository.GetByLanguageAsync(request.LangageCode);
+            var courses = await _courseRepository.GetByLanguageAndPageAsync(request.LanguageCode, request.Page);
             var coursesDTO = _mapper.Map<List<CourseListDTO>>(courses);
             
             

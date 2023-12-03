@@ -16,7 +16,6 @@ using QMnemonic.Application.Mappings;
 using System.Text.Json.Serialization;
 using QMnemonic.Application.Commands.Readings;
 using QMnemonic.Application.Queries.Readings;
-using QMnemonic.Application.Queries.Languages;
 using QMnemonic.Infrastructure.BardApi;
 
 

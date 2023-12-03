@@ -11,7 +11,8 @@ namespace QMnemonic.Application.Queries.Courses
 
     public class GetCoursesListQuery : IRequest<List<CourseListDTO>>
     {
-        public string LangageCode {get; set;}
+        public string LanguageCode {get; set;}
+        public int Page {get; set;}
     }
 
 
