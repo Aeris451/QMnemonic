@@ -15,6 +15,7 @@ namespace QMnemonic.Domain.Entities
     {
         public int Id {get; set;}
         public int CourseId {get; set;}
+        public int Order {get; set;} = 0;
         public string Name {get; set;}
         public string Description {get; set;}
         public List<string> SelectableContent {get; set;} = new List<string>();

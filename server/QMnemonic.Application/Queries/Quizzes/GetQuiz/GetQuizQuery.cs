@@ -9,6 +9,7 @@ namespace QMnemonic.Application.Queries.Quizzes
 {
     public class GetQuizQuery: IRequest<Quiz>
     {
-        public int QuizId {get; set;}
+        public int Order {get; set;}
+        public int CourseId {get; set;}
     }
 }

@@ -28,7 +28,8 @@ namespace QMnemonic.Application.Commands.Courses
                 Name = request.Name,
                 Course = course,
                 CourseId = request.CourseId,
-                Description = request.Description
+                Description = request.Description,
+                Order = course.Readings.Last().Order + 1
             };
 
             course.Readings.Add(newReading);

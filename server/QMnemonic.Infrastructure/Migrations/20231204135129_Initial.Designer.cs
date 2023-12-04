@@ -12,7 +12,7 @@ using QMnemonic.Infrastructure.Data;
 namespace QMnemonic.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231128221022_Initial")]
+    [Migration("20231204135129_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -339,6 +339,9 @@ namespace QMnemonic.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<string>("SelectableContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -368,6 +371,9 @@ namespace QMnemonic.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

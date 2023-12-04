@@ -336,6 +336,9 @@ namespace QMnemonic.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
                     b.Property<string>("SelectableContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -365,6 +368,9 @@ namespace QMnemonic.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

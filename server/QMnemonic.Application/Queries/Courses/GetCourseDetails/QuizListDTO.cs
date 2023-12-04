@@ -10,6 +10,7 @@ namespace QMnemonic.Application.Queries.Quizzes
     {
         public string Name {get; set;}
         public int Elements {get; set;}
+        public int Order {get; set;}
         public int QuizId {get; set;}
         public string Description {get; set;}
 

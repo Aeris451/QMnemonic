@@ -21,7 +21,7 @@ namespace QMnemonic.Infrastructure.Repositories
         }
 
         public async Task AddAsync(Quiz value)
-        {
+        {    
             await _context.Quizzes.AddAsync(value);
             await _context.SaveChangesAsync();
         }
@@ -49,7 +49,7 @@ namespace QMnemonic.Infrastructure.Repositories
             return await _context.Quizzes
             .Include(q => q.Answers)
             .Include(q => q.Questions)
-                        .ThenInclude(question => question.Answer) 
+                        .ThenInclude(question => question.Answer)
             .FirstOrDefaultAsync(q => q.Id == Id);
         }
 
@@ -58,6 +58,20 @@ namespace QMnemonic.Infrastructure.Repositories
 
             _context.Entry(value).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<Quiz> GetQuizFromCourse(int courseId, int quizOrder)
+        {
+            return await _context.Quizzes
+                .Where(q => q.CourseId == courseId)
+                .Skip(quizOrder)
+                .Take(1)
+                .Include(q => q.Answers)
+                .Include(q => q.Questions)
+                    .ThenInclude(question => question.Answer)
+                .FirstOrDefaultAsync();
+
+
         }
     }
 }

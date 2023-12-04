@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -22,15 +23,20 @@ namespace QMnemonic.Application.Commands.Courses
         public async Task<int> Handle(AddQuizToCourseCommand request, CancellationToken cancellationToken)
         {
             var course = await _courseRepository.GetByIdAsync(request.CourseId);
+            
 
-
+            
 
             var newQuiz = new Quiz
             {
                 Name = request.Name,
                 Description = request.Description,
-                CourseId = request.CourseId
+                CourseId = request.CourseId,
+                SelectableContent = new List<string>(),
+                Order = course.Quizzes.Any() ? course.Quizzes.Last().Order + 1 : 0
+
             };
+
 
             course.Quizzes.Add(newQuiz);
 

@@ -41,10 +41,10 @@ namespace QMnemonic.Api.Controllers
         }
 
 
-        [HttpGet("{quizId}")]
-        public async Task<ActionResult<Quiz>> GetQuiz(int quizId)
+        [HttpGet("{courseId}/{order}")]
+        public async Task<ActionResult<Quiz>> GetQuiz(int courseId, int order)
         {
-            var query = new GetQuizQuery { QuizId = quizId };
+            var query = new GetQuizQuery { Order = order, CourseId = courseId };
             var result = await _mediator.Send(query);
 
             if (result == null)

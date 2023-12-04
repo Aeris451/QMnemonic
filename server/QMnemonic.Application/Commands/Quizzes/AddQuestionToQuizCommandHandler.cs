@@ -26,12 +26,12 @@ namespace QMnemonic.Application.Commands.Quizzes
 
             var newQuestion = new Question
             {
-                Content = request.Content,
-                SContent = request.SContent,
-                Annotations = request.Annotations,
+                Content = String.Empty,
+                SContent = String.Empty,
+                Annotations = String.Empty,
                 Answer = new Answer
                 {
-                    Content = request.AnswerContent
+                    Content = String.Empty
                 }
             };
 
