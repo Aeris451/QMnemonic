@@ -1,1 +1,1 @@
-.NET 8 DDD CQRS Entity Framework React project for language learning through courses with flashcard quizzes and readings. Work in progress, documentation and docker image soon. Remember to replace appsettings.json with your own.
+.NET 8 DDD CQRS Entity Framework MSSQL React project for language learning through courses with flashcard quizzes and readings. Work in progress, documentation and docker image soon. Remember to replace appsettings.json with your own if you want to run it.
